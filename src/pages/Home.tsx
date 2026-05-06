@@ -1,119 +1,178 @@
-import { Link } from "react-router-dom";
-import { 
-  Github, 
-  Twitter, 
-  Linkedin, 
-  Mail, 
-  Globe, 
-  User,
-  ArrowRight
-} from "lucide-react";
+import { useState, useEffect } from 'react';
+import MossScene from '../components/MossScene';
 
 export default function Home() {
-  const socialLinks = [
-    { icon: Github, name: "GitHub", url: "https://github.com", color: "hover:text-white hover:bg-slate-700" },
-    { icon: Twitter, name: "Twitter", url: "https://twitter.com", color: "hover:text-white hover:bg-sky-500" },
-    { icon: Linkedin, name: "LinkedIn", url: "https://linkedin.com", color: "hover:text-white hover:bg-blue-600" },
-    { icon: Globe, name: "Website", url: "#", color: "hover:text-white hover:bg-purple-600" },
-  ];
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setCursorPosition({
+        x: e.clientX,
+        y: e.clientY
+      });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
-      {/* 导航栏 */}
-      <nav className="container mx-auto px-4 py-6">
-        <div className="flex justify-between items-center">
-          <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-            My Portfolio
-          </div>
-          <Link 
-            to="/about" 
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors flex items-center gap-2"
-          >
-            关于我
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+    <div className="min-h-screen text-white relative overflow-hidden">
+      {/* 苔藓3D背景 */}
+      <MossScene />
+      
+      {/* 自定义光标 - 游戏风格 */}
+      <div 
+        className="fixed pointer-events-none z-50 mix-blend-difference"
+        style={{
+          left: cursorPosition.x - 40,
+          top: cursorPosition.y - 40,
+          transform: isHovering ? 'scale(1.5)' : 'scale(1)',
+          transition: 'transform 0.2s ease-out'
+        }}
+      >
+        <div className="relative w-20 h-20">
+          <div className="absolute inset-0 border border-white/50 rounded-full" />
+          <div className="absolute inset-2 border border-green-400/30 rounded-full animate-spin-slow" />
+          <div className="absolute top-1/2 left-1/2 w-2 h-2 bg-green-400 rounded-full -translate-x-1/2 -translate-y-1/2" />
         </div>
-      </nav>
+      </div>
 
-      {/* 主要内容 */}
-      <main className="container mx-auto px-4 py-12">
-        {/* 英雄区 */}
-        <section className="text-center mb-16 animate-fadeIn">
-          <div className="relative inline-block mb-8">
-            <div className="w-40 h-40 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center mx-auto shadow-2xl">
-              <User className="w-20 h-20 text-white" />
-            </div>
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-2 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full opacity-50 blur-lg"></div>
+      {/* 主内容层 */}
+      <div className="relative z-20 h-screen flex flex-col justify-between items-center px-8 py-6">
+        {/* 导航栏 */}
+        <nav className="w-full flex justify-between items-center">
+          <div className="text-xs tracking-[0.4em] uppercase text-white/60 font-mono hover:text-white transition-colors cursor-pointer">
+            Ankward Corp.
           </div>
-          
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent">
-            你好，我是开发者
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-slate-300 max-w-2xl mx-auto mb-8">
-            热爱技术，专注于创造优秀的用户体验和高质量的代码
-          </p>
-        </section>
-
-        {/* 社交媒体链接 */}
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold text-center mb-8 text-cyan-400">
-            找到我
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-            {socialLinks.map((social, index) => (
-              <a
-                key={social.name}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`flex flex-col items-center gap-3 p-6 bg-slate-800/50 rounded-xl border border-slate-700 transition-all duration-300 hover:scale-105 hover:shadow-xl ${social.color}`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <social.icon className="w-10 h-10 text-slate-400" />
-                <span className="font-medium">{social.name}</span>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        {/* 联系方式 */}
-        <section className="max-w-xl mx-auto">
-          <div className="bg-slate-800/50 rounded-2xl p-8 border border-slate-700 text-center">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Mail className="w-8 h-8 text-cyan-400" />
-              <h2 className="text-2xl font-semibold">联系我</h2>
-            </div>
-            <p className="text-slate-300 mb-4">有任何问题或合作想法？</p>
-            <a 
-              href="mailto:hello@example.com"
-              className="inline-block px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-semibold hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/25"
+          <div className="flex gap-12 text-sm text-white/50 tracking-widest font-mono">
+            <span 
+              className="cursor-pointer hover:text-white transition-colors relative group"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
             >
-              hello@example.com
-            </a>
+              Pricing
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white/80 group-hover:w-full transition-all duration-300" />
+            </span>
+            <span 
+              className="cursor-pointer hover:text-white transition-colors relative group"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+            >
+              About moss
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white/80 group-hover:w-full transition-all duration-300" />
+            </span>
+            <span 
+              className="cursor-pointer hover:text-white transition-colors relative group"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+            >
+              Login
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white/80 group-hover:w-full transition-all duration-300" />
+            </span>
           </div>
-        </section>
-      </main>
+          {/* 菜单按钮 */}
+          <div 
+            className="w-8 h-8 flex flex-col justify-center items-center gap-1.5 cursor-pointer group"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
+            <div className="w-6 h-0.5 bg-white/50 group-hover:bg-white transition-all duration-300" />
+            <div className="w-6 h-0.5 bg-white/50 group-hover:bg-white transition-all duration-300" />
+          </div>
+        </nav>
 
-      {/* 页脚 */}
-      <footer className="container mx-auto px-4 py-8 text-center text-slate-500">
-        <p>© 2024 My Portfolio. 用 ❤️ 构建</p>
-      </footer>
+        {/* 主标题区域 */}
+        <div className="text-center">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-light leading-tight tracking-[0.2em]" 
+              style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
+            Time to style
+            <br />
+            <span className="italic tracking-[0.1em]">the moss industry</span>
+          </h1>
+        </div>
 
-      {/* 简单的动画样式 */}
+        {/* 底部信息 */}
+        <div className="w-full flex justify-between items-end">
+          <div className="text-xs text-white/40 tracking-widest font-mono">
+            © 2024 Ankward Corp.
+          </div>
+          <div className="text-center">
+            <button 
+              className="px-8 py-3 bg-transparent border border-white/20 rounded-full text-sm tracking-[0.3em] uppercase font-mono hover:bg-white/5 hover:border-white/40 transition-all duration-300 relative group"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+            >
+              <span className="relative z-10">全屏观看</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-green-400/0 to-emerald-400/0 group-hover:from-green-400/20 group-hover:to-emerald-400/20 rounded-full transition-all duration-500" />
+            </button>
+          </div>
+          <div className="text-xs text-white/40 tracking-widest font-mono">
+            v1.0.0
+          </div>
+        </div>
+      </div>
+
+      {/* 播放按钮 - 和3D场景融为一体 */}
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
+        <button className="group relative w-32 h-32 transition-all duration-500 hover:scale-110">
+          {/* 发光效果 */}
+          <div 
+            className="absolute inset-0 rounded-full animate-pulse"
+            style={{
+              background: 'radial-gradient(circle, rgba(200,230,200,0.4) 0%, rgba(150,200,150,0.2) 50%, rgba(0,0,0,0) 70%)',
+              boxShadow: '0 0 80px rgba(100,200,100,0.3)'
+            }}
+          />
+          
+          {/* 主体按钮 */}
+          <div 
+            className="absolute inset-2 rounded-full backdrop-blur-xl"
+            style={{
+              background: 'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(230,240,230,0.7) 60%, rgba(0,0,0,0) 100%)',
+              boxShadow: '0 0 40px rgba(200,230,200,0.4), inset 0 0 20px rgba(255,255,255,0.5)'
+            }}
+          />
+          
+          {/* 播放图标 */}
+          <svg 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 text-black/70 group-hover:text-black group-hover:scale-110 transition-all duration-300 ml-1" 
+            fill="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+
+          {/* 装饰圆环 */}
+          <div className="absolute inset-0 border border-black/10 rounded-full group-hover:border-green-400/30 transition-colors duration-500" />
+          <div className="absolute inset-2 border border-black/5 rounded-full" />
+        </button>
+      </div>
+
+      {/* 游戏风格的粒子效果指示 */}
+      <div className="fixed bottom-6 right-6 z-40 text-xs text-white/40 font-mono tracking-widest">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+          <span>实时渲染</span>
+        </div>
+        <div className="flex items-center gap-2 mt-1">
+          <div className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce" />
+          <span>鼠标交互激活</span>
+        </div>
+      </div>
+
       <style>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
-        .animate-fadeIn {
-          animation: fadeIn 0.8s ease-out;
+        .animate-spin-slow {
+          animation: spin-slow 8s linear infinite;
         }
       `}</style>
     </div>

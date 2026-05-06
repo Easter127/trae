@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebGL Check</title>
+</head>
+<body>
+  <h1>WebGL Detection</h1>
+  <div id="result"></div>
+  
+  <script>
+    const result = document.getElementById('result');
+    
+    // Check WebGL
+    try {
+      const canvas = document.createElement('canvas');
+      let gl = canvas.getContext('webgl2');
+      if (gl) {
+        result.innerHTML += '<p style="color:green">✅ WebGL2 supported!</p>';
+      } else {
+        gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (gl) {
+          result.innerHTML += '<p style="color:yellow">⚠️ WebGL1 supported (legacy)</p>';
+        } else {
+          result.innerHTML += '<p style="color:red">❌ WebGL not supported</p>';
+        }
+      }
+      
+      // Check renderer
+      const debugInfo = gl?.getExtension('WEBGL_debug_renderer_info');
+      if (debugInfo) {
+        const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+        const vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+        result.innerHTML += `<p>Vendor: ${vendor}</p>`;
+        result.innerHTML += `<p>Renderer: ${renderer}</p>`;
+      }
+    } catch (e) {
+      result.innerHTML += `<p style="color:red">❌ Error: ${e.message}</p>`;
+    }
+    
+    // Try Three.js
+    result.innerHTML += '<h2>Three.js Test</h2>';
+    try {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+      script.onload = function() {
+        try {
+          const scene = new THREE.Scene();
+          const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+          const renderer = new THREE.WebGLRenderer({ antialias: true });
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          document.body.appendChild(renderer.domElement);
+          
+          const geometry = new THREE.SphereGeometry(1, 32, 32);
+          const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+          const sphere = new THREE.Mesh(geometry, material);
+          scene.add(sphere);
+          
+          camera.position.z = 5;
+          
+          function animate() {
+            requestAnimationFrame(animate);
+            sphere.rotation.x += 0.01;
+            sphere.rotation.y += 0.01;
+            renderer.render(scene, camera);
+          }
+          animate();
+          
+          result.innerHTML += '<p style="color:green">✅ Three.js works!</p>';
+        } catch (e) {
+          result.innerHTML += `<p style="color:red">❌ Three.js error: ${e.message}</p>`;
+        }
+      };
+      script.onerror = function() {
+        result.innerHTML += '<p style="color:red">❌ Failed to load Three.js</p>';
+      };
+      document.head.appendChild(script);
+    } catch (e) {
+      result.innerHTML += `<p style="color:red">❌ Error: ${e.message}</p>`;
+    }
+  </script>
+</body>
+</html>
