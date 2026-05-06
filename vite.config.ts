@@ -5,7 +5,7 @@ import { traeBadgePlugin } from 'vite-plugin-trae-solo-badge';
 import path from 'path';
 
 export default defineConfig({
-  base: '/trae/',
+  base: './',
   build: {
     sourcemap: 'hidden',
     target: 'esnext',
