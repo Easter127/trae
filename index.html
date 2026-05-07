@@ -4,143 +4,246 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>小金量化 · 智能选股研报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --surface-2: #f1f5f9;
-      --border: #e2e8f0;
-      --text: #1e293b;
-      --text-muted: #64748b;
-      --text-soft: #94a3b8;
-      --primary: #2563eb;
-      --primary-soft: #dbeafe;
-      --success: #16a34a;
-      --success-soft: #dcfce7;
-      --danger: #dc2626;
-      --danger-soft: #fee2e2;
-      --warning: #d97706;
-      --warning-soft: #fef3c7;
-      --gold: #f59e0b;
-      --gold-soft: #fffbeb;
+      --bg: #0a0f1a;
+      --bg2: #0d1424;
+      --bg3: #111a2e;
+      --card: #131d33;
+      --card-hover: #18233f;
+      --border: #1e2d4d;
+      --border-light: #2a3e66;
+      --text: #e8edf5;
+      --text2: #94a3b8;
+      --text3: #64748b;
+      --cyan: #00d4ff;
+      --cyan-dim: rgba(0,212,255,0.08);
+      --cyan-glow: rgba(0,212,255,0.25);
+      --green: #00e676;
+      --green-dim: rgba(0,230,118,0.08);
+      --red: #ff5252;
+      --red-dim: rgba(255,82,82,0.08);
+      --gold: #ffd740;
+      --gold-dim: rgba(255,215,64,0.08);
+      --purple: #e040fb;
+      --purple-dim: rgba(224,64,251,0.08);
+      --orange: #ffab40;
+      --orange-dim: rgba(255,171,64,0.08);
     }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 0 16px;
-    }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 14px; }
 
-    @media (min-width: 768px) {
-      .container {
-        padding: 0 24px;
-      }
+    /* Scanline effect */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,0.015) 2px, rgba(0,212,255,0.015) 4px);
+      pointer-events: none;
+      z-index: 9999;
     }
 
     /* Header */
     .header {
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-      color: white;
-      padding: 28px 0 24px;
+      background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0 0;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      backdrop-filter: blur(20px);
     }
 
-    .header-content {
+    .header-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding-bottom: 16px;
     }
 
-    .header-title {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    .header-subtitle {
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--cyan), #0066ff);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    .brand-text h1 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, var(--cyan), #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-text p {
+      font-size: 11px;
+      color: var(--text3);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-size: 12px;
-      opacity: 0.8;
-      margin-top: 4px;
+      color: var(--text3);
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .date-badge {
-      font-size: 13px;
-      padding: 6px 14px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 20px;
-      font-weight: 600;
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 2s infinite;
     }
 
-    /* Navigation */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Nav */
     .nav {
       display: flex;
       gap: 4px;
       overflow-x: auto;
-      padding: 12px 0;
+      padding-bottom: 12px;
       scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
     }
 
-    .nav::-webkit-scrollbar {
-      display: none;
-    }
+    .nav::-webkit-scrollbar { display: none; }
 
     .nav-item {
-      padding: 8px 16px;
-      font-size: 13px;
+      padding: 8px 14px;
+      font-size: 12px;
       font-weight: 600;
-      color: rgba(255,255,255,0.7);
+      color: var(--text3);
       white-space: nowrap;
-      border-radius: 12px;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s;
+      border: 1px solid transparent;
     }
 
-    .nav-item:hover, .nav-item.active {
-      background: rgba(255,255,255,0.2);
-      color: white;
+    .nav-item:hover {
+      color: var(--cyan);
+      border-color: var(--border);
     }
 
-    /* Sections */
-    .section {
-      padding: 20px 0 24px;
+    .nav-item.active {
+      color: var(--cyan);
+      background: var(--cyan-dim);
+      border-color: rgba(0,212,255,0.2);
+      box-shadow: 0 0 12px var(--cyan-glow);
     }
+
+    /* Section */
+    .section { padding: 20px 0; }
 
     .section-title {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       margin-bottom: 14px;
-      padding-left: 2px;
+    }
+
+    .section-title .line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
     }
 
     .section-title h2 {
-      font-size: 17px;
+      font-size: 14px;
       font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .section-dot {
-      width: 4px;
-      height: 4px;
-      background: var(--primary);
-      border-radius: 50%;
+    .section-title .tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Index Cards */
+    .tag-live {
+      background: var(--green-dim);
+      color: var(--green);
+      border: 1px solid rgba(0,230,118,0.2);
+    }
+
+    .tag-hot {
+      background: var(--red-dim);
+      color: var(--red);
+      border: 1px solid rgba(255,82,82,0.2);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover::before {
+      opacity: 0.5;
+    }
+
+    .card:hover {
+      border-color: var(--border-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    /* Index grid */
     .index-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -148,84 +251,93 @@
     }
 
     @media (min-width: 540px) {
-      .index-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
+      .index-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
     .index-card {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 14px;
-      transition: all 0.2s;
+      border-radius: 12px;
+      padding: 14px;
+      position: relative;
     }
 
-    .index-card:hover {
-      border-color: #cbd5e1;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    .index-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle at top right, var(--cyan-glow), transparent 70%);
+      opacity: 0.3;
     }
 
     .index-name {
       font-size: 12px;
-      color: var(--text-muted);
+      color: var(--text3);
       font-weight: 500;
     }
 
     .index-value {
-      font-size: 16px;
+      font-size: 20px;
       font-weight: 700;
-      margin-top: 4px;
+      margin-top: 6px;
+      font-family: 'JetBrains Mono', monospace;
       font-variant-numeric: tabular-nums;
     }
 
     .index-change {
       font-size: 13px;
       font-weight: 600;
-      margin-top: 2px;
+      margin-top: 4px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .up { color: var(--danger); }
-    .down { color: var(--success); }
+    .up { color: var(--red); }
+    .down { color: var(--green); }
 
     /* Sentiment */
     .sentiment-box {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px 16px;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 10px;
     }
 
-    .sentiment-item {
+    .sentiment-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 8px 0;
     }
 
-    .sentiment-item:not(:last-child) {
-      border-bottom: 1px dashed var(--border);
+    .sentiment-row:not(:last-child) {
+      border-bottom: 1px solid var(--border);
     }
 
     .sentiment-label {
-      font-size: 13px;
-      color: var(--text-muted);
+      font-size: 12px;
+      color: var(--text3);
       font-weight: 500;
     }
 
     .sentiment-value {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .sentiment-highlight {
+    .sentiment-alert {
       margin-top: 12px;
       padding: 10px 14px;
-      background: var(--warning-soft);
-      border-radius: 10px;
-      font-size: 13px;
+      background: linear-gradient(90deg, var(--gold-dim), transparent);
+      border-left: 2px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      font-size: 12px;
       font-weight: 600;
-      color: #78350f;
+      color: var(--gold);
     }
 
     /* Tabs */
@@ -233,91 +345,85 @@
       display: flex;
       gap: 6px;
       margin-bottom: 12px;
-      background: var(--surface-2);
-      padding: 4px;
-      border-radius: 10px;
     }
 
     .tab {
       flex: 1;
-      padding: 8px 12px;
+      padding: 10px;
       text-align: center;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      color: var(--text-muted);
+      color: var(--text3);
+      background: var(--bg3);
+      border: 1px solid var(--border);
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .tab.active {
-      background: var(--surface);
-      color: var(--primary);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      color: var(--cyan);
+      background: var(--cyan-dim);
+      border-color: rgba(0,212,255,0.25);
+      box-shadow: 0 0 12px var(--cyan-glow);
     }
 
-    .tab-content {
-      display: none;
-    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
 
-    .tab-content.active {
-      display: block;
-    }
-
-    /* News / Policy */
-    .news-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    /* News */
+    .news-list { display: flex; flex-direction: column; gap: 8px; }
 
     .news-item {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 12px 14px;
       display: flex;
       gap: 12px;
       align-items: flex-start;
+      transition: all 0.2s;
     }
 
-    .news-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      margin-top: 6px;
+    .news-item:hover {
+      border-color: var(--border-light);
+    }
+
+    .news-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
       flex-shrink: 0;
     }
 
-    .news-dot.red { background: var(--danger); }
-    .news-dot.blue { background: var(--primary); }
-    .news-dot.green { background: var(--success); }
-    .news-dot.orange { background: var(--warning); }
-    .news-dot.purple { background: #9333ea; }
-
-    .news-main {
-      flex: 1;
-      min-width: 0;
-    }
+    .news-icon.red { background: var(--red-dim); }
+    .news-icon.blue { background: var(--cyan-dim); }
+    .news-icon.green { background: var(--green-dim); }
+    .news-icon.orange { background: var(--orange-dim); }
+    .news-icon.purple { background: var(--purple-dim); }
 
     .news-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       margin-bottom: 3px;
-      line-height: 1.4;
     }
 
     .news-desc {
-      font-size: 13px;
-      color: var(--text-muted);
+      font-size: 12px;
+      color: var(--text3);
       line-height: 1.5;
     }
 
     /* Policy */
     .policy-item {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 12px 14px;
       display: flex;
       gap: 10px;
@@ -325,19 +431,20 @@
     }
 
     .policy-source {
-      background: var(--primary-soft);
-      color: var(--primary);
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 10px;
       padding: 4px 8px;
-      border-radius: 6px;
+      border-radius: 4px;
+      background: var(--purple-dim);
+      color: var(--purple);
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
       flex-shrink: 0;
     }
 
     .policy-text {
-      font-size: 13px;
+      font-size: 12px;
+      color: var(--text2);
       font-weight: 500;
-      color: var(--text);
     }
 
     /* Futures */
@@ -348,89 +455,82 @@
     }
 
     @media (min-width: 540px) {
-      .futures-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
+      .futures-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
     .futures-card {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
+      border-radius: 10px;
+      padding: 14px;
       text-align: center;
     }
 
     .futures-name {
       font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
+      font-weight: 700;
+      color: var(--text2);
     }
 
     .futures-price {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 700;
-      margin-top: 4px;
-      font-variant-numeric: tabular-nums;
+      margin-top: 6px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .futures-change {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      margin-top: 2px;
+      margin-top: 4px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .futures-signal {
       display: inline-block;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: 20px;
-      margin-top: 6px;
+      margin-top: 8px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .futures-signal.strong { background: var(--danger-soft); color: var(--danger); }
-    .futures-signal.neutral { background: var(--warning-soft); color: var(--warning); }
-    .futures-signal.weak { background: var(--success-soft); color: var(--success); }
+    .futures-signal.strong { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,82,82,0.2); }
+    .futures-signal.neutral { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(255,171,64,0.2); }
+    .futures-signal.weak { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,230,118,0.2); }
 
     /* US Stocks */
-    .us-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    .us-list { display: flex; flex-direction: column; gap: 8px; }
 
     .us-item {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 12px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .us-left .sector {
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .us-left .impact {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .us-right {
-      text-align: right;
-    }
-
-    .us-right .change {
-      font-size: 15px;
+    .us-sector {
+      font-size: 13px;
       font-weight: 700;
     }
 
-    /* Sectors */
+    .us-impact {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 2px;
+    }
+
+    .us-change {
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Sector */
     .sector-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -438,136 +538,155 @@
     }
 
     @media (min-width: 540px) {
-      .sector-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
+      .sector-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
     .sector-card {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
+      border-radius: 10px;
+      padding: 14px;
+      position: relative;
+    }
+
+    .sector-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle at top right, var(--cyan-glow), transparent 70%);
+      opacity: 0.2;
     }
 
     .sector-name {
       font-size: 13px;
       font-weight: 700;
-      margin-bottom: 4px;
     }
 
     .sector-change {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 700;
+      margin-top: 4px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .sector-flow {
       font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 4px;
+      color: var(--text3);
+      margin-top: 6px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .sector-leader {
       font-size: 11px;
-      color: var(--primary);
+      color: var(--cyan);
       font-weight: 600;
       margin-top: 3px;
     }
 
     /* Stock Cards */
-    .stock-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .stock-list { display: flex; flex-direction: column; gap: 10px; }
 
     .stock-card {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
+      border-radius: 12px;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stock-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.4;
     }
 
     .stock-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
-    .stock-name-part {
-      flex: 1;
-      min-width: 0;
-    }
+    .stock-name-block { flex: 1; min-width: 0; }
 
     .stock-name {
-      font-size: 17px;
-      font-weight: 700;
+      font-size: 18px;
+      font-weight: 800;
     }
 
     .stock-code {
       font-size: 12px;
-      color: var(--text-soft);
+      color: var(--text3);
       margin-left: 6px;
-      font-weight: 500;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .stock-sector {
       display: inline-block;
       font-size: 11px;
-      padding: 3px 10px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      border-radius: 20px;
+      padding: 4px 10px;
+      background: var(--cyan-dim);
+      color: var(--cyan);
+      border-radius: 4px;
       font-weight: 600;
-      margin-top: 6px;
+      margin-top: 8px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .stock-price-part {
-      text-align: right;
-    }
+    .stock-price-block { text-align: right; }
 
     .stock-price {
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
       font-variant-numeric: tabular-nums;
     }
 
     .stock-stars {
       display: inline-flex;
       gap: 2px;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     .star {
       color: var(--gold);
       font-size: 14px;
+      text-shadow: 0 0 6px rgba(255,215,64,0.3);
     }
 
-    .star.dim {
-      color: #e2e8f0;
-    }
+    .star.dim { color: var(--border); }
 
     .stock-logic {
-      background: var(--gold-soft);
-      border-left: 3px solid var(--gold);
-      padding: 10px 12px;
-      border-radius: 0 10px 10px 0;
+      background: linear-gradient(90deg, var(--gold-dim), transparent);
+      border-left: 2px solid var(--gold);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
       margin-bottom: 12px;
     }
 
     .stock-logic-label {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      color: #78350f;
+      color: var(--gold);
       margin-bottom: 4px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .stock-logic-text {
       font-size: 13px;
-      color: #451a03;
+      color: var(--text2);
       line-height: 1.6;
-      font-weight: 500;
     }
 
     .stock-catalysts {
@@ -580,73 +699,93 @@
     .catalyst-tag {
       font-size: 11px;
       padding: 4px 10px;
-      border-radius: 20px;
+      border-radius: 4px;
       font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .catalyst-tag.news {
-      background: var(--primary-soft);
-      color: var(--primary);
+      background: var(--cyan-dim);
+      color: var(--cyan);
+      border: 1px solid rgba(0,212,255,0.15);
     }
 
     .catalyst-tag.policy {
-      background: #f3e8ff;
-      color: #7c3aed;
+      background: var(--purple-dim);
+      color: var(--purple);
+      border: 1px solid rgba(224,64,251,0.15);
     }
 
     .catalyst-tag.capital {
-      background: var(--success-soft);
-      color: var(--success);
+      background: var(--green-dim);
+      color: var(--green);
+      border: 1px solid rgba(0,230,118,0.15);
     }
 
     .stock-advice {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 10px;
-      border-top: 1px dashed var(--border);
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
     }
 
     .advice-label {
-      font-size: 12px;
-      color: var(--text-muted);
+      font-size: 11px;
+      color: var(--text3);
       font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .advice-text {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       padding: 5px 12px;
-      border-radius: 20px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .advice-text.caution {
-      background: var(--warning-soft);
-      color: var(--warning);
+      background: var(--orange-dim);
+      color: var(--orange);
+      border: 1px solid rgba(255,171,64,0.2);
     }
 
     .advice-text.risk {
-      background: var(--danger-soft);
-      color: var(--danger);
+      background: var(--red-dim);
+      color: var(--red);
+      border: 1px solid rgba(255,82,82,0.2);
     }
 
     .advice-text.opportunity {
-      background: var(--success-soft);
-      color: var(--success);
+      background: var(--green-dim);
+      color: var(--green);
+      border: 1px solid rgba(0,230,118,0.2);
     }
 
-    /* Trend Cards */
-    .trend-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    /* Trend */
+    .trend-list { display: flex; flex-direction: column; gap: 10px; }
 
     .trend-card {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 12px;
       padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .trend-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0.3;
     }
 
     .trend-top {
@@ -657,71 +796,83 @@
     }
 
     .trend-name {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
     }
 
     .trend-name .code {
-      font-size: 12px;
-      color: var(--text-soft);
+      font-size: 11px;
+      color: var(--text3);
       margin-left: 6px;
-      font-weight: 500;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .trend-score {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 20px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .trend-score.high {
-      background: var(--success-soft);
-      color: var(--success);
+      background: var(--green-dim);
+      color: var(--green);
+      border: 1px solid rgba(0,230,118,0.2);
     }
 
     .trend-score.mid {
-      background: var(--warning-soft);
-      color: var(--warning);
+      background: var(--orange-dim);
+      color: var(--orange);
+      border: 1px solid rgba(255,171,64,0.2);
     }
 
     .trend-bar {
-      height: 6px;
-      background: var(--border);
-      border-radius: 3px;
-      margin-bottom: 10px;
+      height: 4px;
+      background: var(--bg3);
+      border-radius: 2px;
+      margin-bottom: 12px;
       overflow: hidden;
     }
 
     .trend-bar-fill {
       height: 100%;
-      border-radius: 3px;
+      border-radius: 2px;
       transition: width 1s ease;
     }
 
-    .trend-bar-fill.high { background: var(--success); }
-    .trend-bar-fill.mid { background: var(--warning); }
+    .trend-bar-fill.high {
+      background: linear-gradient(90deg, var(--green), #00b248);
+      box-shadow: 0 0 8px rgba(0,230,118,0.3);
+    }
+
+    .trend-bar-fill.mid {
+      background: linear-gradient(90deg, var(--orange), #ff8f00);
+      box-shadow: 0 0 8px rgba(255,171,64,0.3);
+    }
 
     .trend-logic {
-      background: var(--primary-soft);
-      border-left: 3px solid var(--primary);
-      padding: 10px 12px;
-      border-radius: 0 10px 10px 0;
+      background: linear-gradient(90deg, var(--cyan-dim), transparent);
+      border-left: 2px solid var(--cyan);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
       margin-bottom: 10px;
     }
 
     .trend-logic-label {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      color: #1e3a8a;
+      color: var(--cyan);
       margin-bottom: 4px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .trend-logic-text {
-      font-size: 13px;
-      color: #1e3a8a;
+      font-size: 12px;
+      color: var(--text2);
       line-height: 1.6;
-      font-weight: 500;
     }
 
     .trend-details {
@@ -732,8 +883,9 @@
     }
 
     .trend-detail {
-      font-size: 12px;
-      color: var(--text-muted);
+      font-size: 11px;
+      color: var(--text3);
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .trend-detail span {
@@ -743,20 +895,23 @@
 
     .trend-advice {
       display: inline-block;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       padding: 5px 12px;
-      border-radius: 20px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .trend-advice.buy {
-      background: var(--success-soft);
-      color: var(--success);
+      background: var(--green-dim);
+      color: var(--green);
+      border: 1px solid rgba(0,230,118,0.2);
     }
 
     .trend-advice.risk {
-      background: var(--danger-soft);
-      color: var(--danger);
+      background: var(--red-dim);
+      color: var(--red);
+      border: 1px solid rgba(255,82,82,0.2);
     }
 
     /* Discipline */
@@ -767,43 +922,41 @@
     }
 
     @media (min-width: 640px) {
-      .discipline-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .discipline-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     .discipline-card {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 12px;
       padding: 14px;
     }
 
     .discipline-card h3 {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--primary);
+      margin-bottom: 10px;
+      color: var(--cyan);
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .discipline-card ul {
-      list-style: none;
-    }
+    .discipline-card ul { list-style: none; }
 
     .discipline-card li {
       font-size: 12px;
-      color: var(--text-muted);
-      padding: 4px 0 4px 16px;
+      color: var(--text3);
+      padding: 5px 0 5px 16px;
       position: relative;
       line-height: 1.6;
     }
 
     .discipline-card li::before {
-      content: "•";
+      content: '>';
       position: absolute;
       left: 0;
-      color: var(--primary);
+      color: var(--cyan);
       font-weight: bold;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     /* Disclaimer */
@@ -815,22 +968,23 @@
     }
 
     .disclaimer-text {
-      font-size: 12px;
-      color: var(--text-soft);
-      max-width: 500px;
+      font-size: 11px;
+      color: var(--text3);
+      max-width: 480px;
       margin: 0 auto;
       line-height: 1.8;
     }
 
     .disclaimer-brand {
-      font-size: 12px;
-      color: var(--text-muted);
+      font-size: 11px;
+      color: var(--text3);
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 2px;
       margin-top: 16px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Scroll to Top */
+    /* Scroll top */
     .scroll-top {
       position: fixed;
       bottom: 20px;
@@ -838,38 +992,56 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: var(--primary);
-      color: white;
-      border: none;
+      background: var(--card);
+      color: var(--cyan);
+      border: 1px solid var(--border);
       font-size: 18px;
       cursor: pointer;
       display: none;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 0 20px var(--cyan-glow);
       transition: all 0.2s;
       z-index: 200;
     }
 
-    .scroll-top.show {
-      display: flex;
-    }
+    .scroll-top.show { display: flex; }
 
     .scroll-top:hover {
-      transform: scale(1.08);
-      background: #1d4ed8;
+      border-color: var(--cyan);
+      box-shadow: 0 0 30px var(--cyan-glow);
     }
+
+    /* Corner decorations */
+    .corner-tl, .corner-tr, .corner-bl, .corner-br {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-color: var(--cyan);
+      opacity: 0.3;
+    }
+
+    .corner-tl { top: 0; left: 0; border-top: 1px solid; border-left: 1px solid; }
+    .corner-tr { top: 0; right: 0; border-top: 1px solid; border-right: 1px solid; }
+    .corner-bl { bottom: 0; left: 0; border-bottom: 1px solid; border-left: 1px solid; }
+    .corner-br { bottom: 0; right: 0; border-bottom: 1px solid; border-right: 1px solid; }
   </style>
 </head>
 <body>
   <header class="header">
     <div class="container">
-      <div class="header-content">
-        <div>
-          <div class="header-title">小金量化 · 智能选股</div>
-          <div class="header-subtitle">龙虎榜高频 · 股性活跃 · 全维度分析</div>
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-icon">◈</div>
+          <div class="brand-text">
+            <h1>小金量化</h1>
+            <p>智能选股系统</p>
+          </div>
         </div>
-        <div class="date-badge">2026.05.07</div>
+        <div class="status">
+          <span class="status-dot"></span>
+          <span>SYSTEM ONLINE</span>
+        </div>
       </div>
       <nav class="nav" id="nav">
         <div class="nav-item active" data-section="market">市场全景</div>
@@ -885,36 +1057,37 @@
   <main class="container">
     <section class="section" id="market">
       <div class="section-title">
-        <div class="section-dot"></div>
         <h2>市场全景</h2>
+        <span class="tag tag-live">LIVE</span>
+        <div class="line"></div>
       </div>
       <div class="index-grid" id="indexGrid"></div>
-      <div style="height: 14px;"></div>
+      <div style="height: 10px;"></div>
       <div class="sentiment-box">
-        <div class="sentiment-item">
+        <div class="sentiment-row">
           <span class="sentiment-label">涨跌停</span>
           <span class="sentiment-value"><span class="up">73</span> / <span class="down">70</span></span>
         </div>
-        <div class="sentiment-item">
+        <div class="sentiment-row">
           <span class="sentiment-label">涨跌家数</span>
           <span class="sentiment-value"><span class="up">1469</span> / <span class="down">1681</span></span>
         </div>
-        <div class="sentiment-item">
+        <div class="sentiment-row">
           <span class="sentiment-label">大小盘对比</span>
           <span class="sentiment-value">大盘略占优</span>
         </div>
-        <div class="sentiment-item">
+        <div class="sentiment-row">
           <span class="sentiment-label">连板情绪</span>
           <span class="sentiment-value up">极度高涨</span>
         </div>
-        <div class="sentiment-highlight">⚡ 赚钱效应爆棚，积极打板，优选龙头</div>
+        <div class="sentiment-alert">⚡ 赚钱效应爆棚，积极打板，优选龙头</div>
       </div>
     </section>
 
     <section class="section" id="catalyst">
       <div class="section-title">
-        <div class="section-dot"></div>
         <h2>催化因素</h2>
+        <div class="line"></div>
       </div>
       <div class="tabs">
         <div class="tab active" data-tab="news">消息面</div>
@@ -942,36 +1115,37 @@
 
     <section class="section" id="sector">
       <div class="section-title">
-        <div class="section-dot"></div>
         <h2>热门板块</h2>
+        <span class="tag tag-hot">HOT</span>
+        <div class="line"></div>
       </div>
       <div class="sector-grid" id="sectorGrid"></div>
     </section>
 
     <section class="section" id="stocks">
       <div class="section-title">
-        <div class="section-dot"></div>
         <h2>重点推荐</h2>
+        <div class="line"></div>
       </div>
       <div class="stock-list" id="stockList"></div>
     </section>
 
     <section class="section" id="trend">
       <div class="section-title">
-        <div class="section-dot"></div>
         <h2>趋势大牛</h2>
+        <div class="line"></div>
       </div>
       <div class="trend-list" id="trendList"></div>
     </section>
 
     <section class="section" id="discipline">
       <div class="section-title">
-        <div class="section-dot"></div>
         <h2>操作纪律</h2>
+        <div class="line"></div>
       </div>
       <div class="discipline-grid">
         <div class="discipline-card">
-          <h3>💰 仓位管理</h3>
+          <h3>仓位管理</h3>
           <ul>
             <li>单只个股仓位不超过总资金20%</li>
             <li>同一板块持仓不超过总资金30%</li>
@@ -980,7 +1154,7 @@
           </ul>
         </div>
         <div class="discipline-card">
-          <h3>🎯 买入纪律</h3>
+          <h3>买入纪律</h3>
           <ul>
             <li>只在分歧转一致时买入，不追一致后的缩量板</li>
             <li>买入前必须确认题材逻辑成立，不买纯跟风股</li>
@@ -989,7 +1163,7 @@
           </ul>
         </div>
         <div class="discipline-card">
-          <h3>🔒 持有纪律</h3>
+          <h3>持有纪律</h3>
           <ul>
             <li>龙头股持有至题材退潮或出现明确见顶信号</li>
             <li>设置止盈线：盈利20%以上分批止盈</li>
@@ -998,7 +1172,7 @@
           </ul>
         </div>
         <div class="discipline-card">
-          <h3>⚠️ 风险警示</h3>
+          <h3>风险警示</h3>
           <ul>
             <li>当前未检测到极高风险标的</li>
             <li>连板股断板后观察2日，不反包则离场</li>
@@ -1013,7 +1187,7 @@
       <p class="disclaimer-text">
         风险提示：本报告由量化模型自动生成，所有分析基于历史数据和统计规律，不构成任何投资建议。股市有风险，投资需谨慎。过往表现不代表未来收益。
       </p>
-      <div class="disclaimer-brand">—— Stock Alpha 智能选股系统 ——</div>
+      <div class="disclaimer-brand">— STOCK ALPHA V1.0 —</div>
     </div>
   </main>
 
@@ -1045,20 +1219,20 @@
       document.getElementById('indexGrid').innerHTML = indexHtml;
 
       const news = [
-        { title: '商业航天密集发射', desc: '近期商业航天发射任务密集，卫星互联网产业链持续受益', dot: 'red' },
-        { title: 'AI算力需求爆发', desc: '国内外大厂持续加大AI算力投入，光模块/PCB/服务器需求旺盛', dot: 'blue' },
-        { title: '锂价触底反弹', desc: '碳酸锂期货价格持续反弹，锂矿企业估值修复', dot: 'green' },
-        { title: '电力体制改革深化', desc: '电力市场化改革加速推进，电力企业盈利预期改善', dot: 'orange' },
-        { title: '地产政策持续宽松', desc: '多地出台地产支持政策，家装/建材需求有望回暖', dot: 'purple' },
-        { title: '钨价持续上涨', desc: '钨价创近年新高，钨产业链企业利润弹性大', dot: 'red' },
-        { title: '5G-A商用加速', desc: '运营商5G-A网络建设加速，通信设备需求增长', dot: 'blue' },
-        { title: '氢能产业政策加码', desc: '多省出台氢能产业发展规划，氢能产业链加速落地', dot: 'green' }
+        { title: '商业航天密集发射', desc: '近期商业航天发射任务密集，卫星互联网产业链持续受益', icon: '🚀', color: 'red' },
+        { title: 'AI算力需求爆发', desc: '国内外大厂持续加大AI算力投入，光模块/PCB/服务器需求旺盛', icon: '🤖', color: 'blue' },
+        { title: '锂价触底反弹', desc: '碳酸锂期货价格持续反弹，锂矿企业估值修复', icon: '🔋', color: 'green' },
+        { title: '电力体制改革深化', desc: '电力市场化改革加速推进，电力企业盈利预期改善', icon: '⚡', color: 'orange' },
+        { title: '地产政策持续宽松', desc: '多地出台地产支持政策，家装/建材需求有望回暖', icon: '🏠', color: 'purple' },
+        { title: '钨价持续上涨', desc: '钨价创近年新高，钨产业链企业利润弹性大', icon: '📈', color: 'red' },
+        { title: '5G-A商用加速', desc: '运营商5G-A网络建设加速，通信设备需求增长', icon: '📡', color: 'blue' },
+        { title: '氢能产业政策加码', desc: '多省出台氢能产业发展规划，氢能产业链加速落地', icon: '💧', color: 'green' }
       ];
 
       const newsHtml = news.map(n => `
         <div class="news-item">
-          <div class="news-dot ${n.dot}"></div>
-          <div class="news-main">
+          <div class="news-icon ${n.color}">${n.icon}</div>
+          <div>
             <div class="news-title">${n.title}</div>
             <div class="news-desc">${n.desc}</div>
           </div>
@@ -1109,13 +1283,13 @@
 
       const usHtml = usStocks.map(s => `
         <div class="us-item">
-          <div class="us-left">
-            <div class="sector">${s.sector}</div>
-            <div class="impact">${s.impact}</div>
+          <div>
+            <div class="us-sector">${s.sector}</div>
+            <div class="us-impact">${s.impact}</div>
           </div>
-          <div class="us-right">
-            <div class="change ${s.dir}">${s.change}</div>
-            <span class="futures-signal ${s.signal === '偏强' ? 'strong' : 'neutral'}" style="margin-top:2px;display:inline-block;">${s.signal}</span>
+          <div style="text-align:right">
+            <div class="us-change ${s.dir}">${s.change}</div>
+            <span class="futures-signal ${s.signal === '偏强' ? 'strong' : 'neutral'}" style="margin-top:4px;display:inline-block;">${s.signal}</span>
           </div>
         </div>
       `).join('');
@@ -1204,14 +1378,14 @@
         return `
           <div class="stock-card">
             <div class="stock-header">
-              <div class="stock-name-part">
+              <div class="stock-name-block">
                 <div>
                   <span class="stock-name">${s.name}</span>
                   <span class="stock-code">${s.code}</span>
                 </div>
                 <div class="stock-sector">${s.sector}</div>
               </div>
-              <div class="stock-price-part">
+              <div class="stock-price-block">
                 <div class="stock-price">${s.price}</div>
                 <div class="stock-stars">${starsHtml}</div>
               </div>
@@ -1352,7 +1526,6 @@
           scrollTop.classList.remove('show');
         }
 
-        // Update nav active state
         for (let i = sections.length - 1; i >= 0; i--) {
           const el = sections[i];
           const rect = el.getBoundingClientRect();
