@@ -11,23 +11,35 @@
 - **响应式设计**：适配各种屏幕尺寸
 - **Trae Solo 支持**：完美集成 Trae Solo，支持一键修改和部署
 
-## 🚀 Trae Solo 使用指南
+## 🚀 部署方案
 
-### 1. 开发模式
+### 方案一：GitHub Pages + Cloudflare CDN（推荐！）
+
+**优点**：永久免费、国内访问快、支持自动部署
+
+**配置步骤**：
+
+1. **GitHub Pages 配置**
+   - 打开仓库 → Settings → Pages
+   - Source: Deploy from a branch
+   - Branch: main, Folder: /dist
+   - 点击 Save
+
+2. **Cloudflare CDN 配置**（国内加速）
+   - 注册 Cloudflare：https://dash.cloudflare.com/
+   - 添加站点，配置 CNAME 记录指向 `easter127.github.io`
+   - 开启 CDN 加速和 HTTPS
+
+### 方案二：本地开发
 ```bash
 npm run dev
 ```
-在浏览器打开 http://localhost:16000
+打开 http://localhost:16000
 
-### 2. 生产构建
+### 方案三：生产构建
 ```bash
 npm run build
 ```
-
-### 3. 一键修改和部署
-1. 用 Trae Solo 修改项目内容
-2. 提交代码到 GitHub
-3. 自动触发 GitHub Pages 部署！
 
 ## 📁 项目结构
 
@@ -52,7 +64,7 @@ npm run build
 - **3D**：Three.js + React Three Fiber + drei
 - **样式**：Tailwind CSS
 - **构建**：Vite
-- **部署**：GitHub Pages / Vercel
+- **部署**：GitHub Pages + Cloudflare CDN
 
 ## 🎯 快速修改
 
