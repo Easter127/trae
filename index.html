@@ -2,209 +2,1529 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>苔藓3D交互场景</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title>小金量化 · 智能选股研报</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-card: #111827;
+      --bg-card-hover: #1a2235;
+      --border: #1e293b;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-gold: #f59e0b;
+      --accent-gold-dim: rgba(245, 158, 11, 0.15);
+      --accent-green: #10b981;
+      --accent-green-dim: rgba(16, 185, 129, 0.12);
+      --accent-red: #ef4444;
+      --accent-red-dim: rgba(239, 68, 68, 0.12);
+      --accent-blue: #3b82f6;
+      --accent-blue-dim: rgba(59, 130, 246, 0.12);
+      --accent-purple: #8b5cf6;
+      --accent-purple-dim: rgba(139, 92, 246, 0.12);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      min-height: 100vh;
-      background: radial-gradient(ellipse at center, #0f2a0a 0%, #051003 100%);
-      overflow: hidden;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding-top: var(--safe-top);
+      padding-bottom: var(--safe-bottom);
+      padding-left: var(--safe-left);
+      padding-right: var(--safe-right);
     }
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
+
+    body.is-mobile {
+      -webkit-text-size-adjust: 100%;
     }
-    .content {
+
+    body.is-ios {
+      padding-bottom: calc(var(--safe-bottom) + 20px);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    @media (min-width: 768px) {
+      .container { padding: 0 32px; }
+    }
+
+    .hero {
       position: relative;
-      z-index: 10;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      padding: 60px 0 40px;
       text-align: center;
-      color: white;
-      padding: 20px;
+      overflow: hidden;
     }
-    h1 {
-      font-size: 3rem;
-      font-weight: 300;
-      letter-spacing: 0.2em;
-      margin-bottom: 1rem;
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(245, 158, 11, 0.08) 0%, transparent 60%);
+      animation: heroGlow 8s ease-in-out infinite alternate;
     }
-    h2 {
-      font-size: 1.5rem;
-      font-weight: 300;
-      font-style: italic;
-      letter-spacing: 0.1em;
-      opacity: 0.8;
+
+    @keyframes heroGlow {
+      0% { transform: translate(-5%, -5%) scale(1); }
+      100% { transform: translate(5%, 5%) scale(1.1); }
     }
-    nav {
-      position: fixed;
-      top: 20px;
-      left: 0;
-      right: 0;
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-gold-dim);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--accent-gold);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+    }
+
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-gold);
+      border-radius: 50%;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #f59e0b, #fbbf24, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @media (min-width: 768px) {
+      .hero h1 { font-size: 2.5rem; }
+    }
+
+    .hero .subtitle {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .hero .date {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .hero .meta-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .hero .meta-item .num {
+      color: var(--accent-gold);
+      font-weight: 700;
+    }
+
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 14, 26, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .nav-bar::-webkit-scrollbar { display: none; }
+
+    .nav-inner {
+      display: flex;
+      gap: 0;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 8px;
+      min-width: max-content;
+    }
+
+    .nav-bar a {
+      display: block;
+      padding: 12px 14px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .nav-bar a:hover, .nav-bar a.active {
+      color: var(--accent-gold);
+      border-bottom-color: var(--accent-gold);
+    }
+
+    @media (min-width: 768px) {
+      .nav-bar a { padding: 14px 20px; font-size: 0.85rem; }
+    }
+
+    .section {
+      padding: 32px 0;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .section-title .icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .section-title h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .section-title .tag {
+      margin-left: auto;
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .index-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .index-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (min-width: 960px) {
+      .index-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .index-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .index-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .index-card .name {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .index-card .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .index-card .change {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .up { color: var(--accent-red); }
+    .down { color: var(--accent-green); }
+
+    .sentiment-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .sentiment-row {
       display: flex;
       justify-content: space-between;
-      padding: 0 40px;
-      z-index: 100;
+      align-items: center;
+      padding: 8px 0;
     }
-    .logo {
+
+    .sentiment-row:not(:last-child) {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sentiment-label {
       font-size: 0.8rem;
-      letter-spacing: 0.4em;
-      opacity: 0.6;
+      color: var(--text-secondary);
     }
-    .menu {
+
+    .sentiment-value {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .sentiment-verdict {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-gold-dim);
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .news-list {
       display: flex;
-      gap: 30px;
+      flex-direction: column;
+      gap: 10px;
     }
-    .menu a {
-      color: rgba(255,255,255,0.6);
-      text-decoration: none;
-      font-size: 0.9rem;
-      letter-spacing: 0.15em;
-      transition: all 0.3s ease;
+
+    .news-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      transition: border-color 0.2s;
     }
-    .menu a:hover {
-      color: white;
+
+    .news-item:hover {
+      border-color: rgba(59, 130, 246, 0.4);
     }
-    .info {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      font-size: 0.75rem;
-      opacity: 0.5;
-      z-index: 100;
-    }
-    .pulse {
-      display: inline-block;
+
+    .news-dot {
       width: 8px;
       height: 8px;
-      background: #4ade80;
       border-radius: 50%;
-      animation: pulse 2s infinite;
+      margin-top: 6px;
+      flex-shrink: 0;
     }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.5); }
+
+    .news-item .title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .news-item .desc {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .policy-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .policy-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .policy-source {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--accent-purple-dim);
+      color: var(--accent-purple);
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .policy-text {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .sector-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .sector-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .sector-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sector-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 0 0 0 40px;
+      opacity: 0.1;
+    }
+
+    .sector-card.hot::after { background: var(--accent-red); }
+    .sector-card.warm::after { background: var(--accent-gold); }
+
+    .sector-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .sector-change {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .sector-flow {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .sector-leader {
+      font-size: 0.7rem;
+      color: var(--accent-gold);
+      margin-top: 4px;
+    }
+
+    .stock-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 14px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .stock-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .stock-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .stock-name-block .name {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .stock-name-block .code {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-left: 6px;
+    }
+
+    .stock-name-block .sector-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: var(--accent-blue-dim);
+      color: var(--accent-blue);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    .stock-price {
+      text-align: right;
+    }
+
+    .stock-price .price {
+      font-size: 1.2rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stock-stars {
+      display: flex;
+      gap: 2px;
+      margin-top: 4px;
+      justify-content: flex-end;
+    }
+
+    .star {
+      font-size: 0.7rem;
+      color: var(--accent-gold);
+    }
+
+    .star.dim {
+      color: var(--text-muted);
+      opacity: 0.3;
+    }
+
+    .stock-logic {
+      background: rgba(245, 158, 11, 0.06);
+      border-left: 3px solid var(--accent-gold);
+      padding: 12px 14px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-bottom: 12px;
+    }
+
+    .stock-logic .label {
+      font-size: 0.7rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .stock-logic .text {
+      font-size: 0.82rem;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .stock-catalyst {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .catalyst-tag {
+      font-size: 0.7rem;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+
+    .catalyst-tag.policy {
+      background: var(--accent-purple-dim);
+      color: var(--accent-purple);
+    }
+
+    .catalyst-tag.news {
+      background: var(--accent-blue-dim);
+      color: var(--accent-blue);
+    }
+
+    .catalyst-tag.capital {
+      background: var(--accent-green-dim);
+      color: var(--accent-green);
+    }
+
+    .stock-advice {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    .advice-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .advice-text {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .advice-text.caution {
+      color: var(--accent-gold);
+    }
+
+    .advice-text.risk {
+      color: var(--accent-red);
+    }
+
+    .advice-text.opportunity {
+      color: var(--accent-green);
+    }
+
+    .trend-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .trend-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .trend-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .trend-name .code {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+
+    .trend-score {
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 10px;
+    }
+
+    .trend-score.high {
+      background: var(--accent-green-dim);
+      color: var(--accent-green);
+    }
+
+    .trend-score.mid {
+      background: var(--accent-gold-dim);
+      color: var(--accent-gold);
+    }
+
+    .trend-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .trend-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 1s ease;
+    }
+
+    .trend-bar-fill.high { background: var(--accent-green); }
+    .trend-bar-fill.mid { background: var(--accent-gold); }
+
+    .trend-detail {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .trend-detail-item {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+    }
+
+    .trend-detail-item span {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .trend-advice {
+      font-size: 0.75rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .trend-advice.buy {
+      background: var(--accent-green-dim);
+      color: var(--accent-green);
+    }
+
+    .trend-advice.hold {
+      background: var(--accent-gold-dim);
+      color: var(--accent-gold);
+    }
+
+    .trend-advice.risk {
+      background: var(--accent-red-dim);
+      color: var(--accent-red);
+    }
+
+    .discipline-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .discipline-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .discipline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .discipline-card h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .discipline-card ul {
+      list-style: none;
+    }
+
+    .discipline-card li {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      padding: 5px 0;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .discipline-card li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent-gold);
+      font-weight: bold;
+    }
+
+    .futures-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    @media (min-width: 640px) {
+      .futures-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .futures-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .futures-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .futures-price {
+      font-size: 1rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .futures-signal {
+      font-size: 0.7rem;
+      margin-top: 4px;
+      padding: 2px 8px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    .futures-signal.strong { background: var(--accent-red-dim); color: var(--accent-red); }
+    .futures-signal.neutral { background: var(--accent-gold-dim); color: var(--accent-gold); }
+    .futures-signal.weak { background: var(--accent-green-dim); color: var(--accent-green); }
+
+    .us-stock-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .us-stock-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .us-stock-left .sector {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .us-stock-left .impact {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .us-stock-right {
+      text-align: right;
+    }
+
+    .us-stock-right .change {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .us-stock-right .signal {
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .disclaimer {
+      text-align: center;
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+    }
+
+    .disclaimer p {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .disclaimer .brand {
+      font-size: 0.8rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+      margin-top: 12px;
+      letter-spacing: 0.1em;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+    }
+
+    .tab-row::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      padding: 6px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .tab-btn.active {
+      background: var(--accent-gold-dim);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: var(--accent-gold);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .scroll-top-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      color: var(--bg-primary);
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .scroll-top-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .scroll-top-btn.show {
+      display: flex;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 8px 0;
     }
   </style>
 </head>
 <body>
-  <canvas id="mossCanvas"></canvas>
-  
-  <nav>
-    <div class="logo">ANKWARD CORP.</div>
-    <div class="menu">
-      <a href="#home">HOME</a>
-      <a href="#about">ABOUT</a>
-      <a href="#contact">CONTACT</a>
+  <div class="hero">
+    <div class="hero-content container">
+      <div class="hero-badge"><span class="dot"></span>智能量化</div>
+      <h1>小金量化 · 选股研报</h1>
+      <p class="subtitle">龙虎榜高频上榜 · 股性活跃 · 全维度分析</p>
+      <p class="date">2026年5月7日</p>
+      <div class="meta-row">
+        <div class="meta-item">数据源 <span class="num">3200</span>条龙虎榜</div>
+        <div class="meta-item">筛选 <span class="num">1138</span>→<span class="num">25</span>只</div>
+        <div class="meta-item">12维度分析</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="nav-bar" id="navBar">
+    <div class="nav-inner">
+      <a href="#market" class="active">市场全景</a>
+      <a href="#catalyst">催化逻辑</a>
+      <a href="#sector">板块热度</a>
+      <a href="#stocks">重点推荐</a>
+      <a href="#trend">趋势大牛</a>
+      <a href="#discipline">风控纪律</a>
     </div>
   </nav>
 
-  <div class="content">
-    <h1>TIME TO STYLE</h1>
-    <h2>THE MOSS INDUSTRY</h2>
+  <div class="container">
+    <section class="section fade-in" id="market">
+      <div class="section-title">
+        <div class="icon" style="background:var(--accent-blue-dim);color:var(--accent-blue);">📊</div>
+        <h2>市场全景</h2>
+        <span class="tag" style="background:var(--accent-green-dim);color:var(--accent-green);">实时</span>
+      </div>
+
+      <div class="index-grid" id="indexGrid"></div>
+
+      <div class="sentiment-bar">
+        <div class="sentiment-row">
+          <span class="sentiment-label">涨停 / 跌停</span>
+          <span class="sentiment-value"><span class="up">73</span> / <span class="down">70</span></span>
+        </div>
+        <div class="sentiment-row">
+          <span class="sentiment-label">上涨 / 下跌</span>
+          <span class="sentiment-value"><span class="up">1469</span> / <span class="down">1681</span></span>
+        </div>
+        <div class="sentiment-row">
+          <span class="sentiment-label">大小盘对比</span>
+          <span class="sentiment-value" style="font-size:0.78rem;">大盘略占优</span>
+        </div>
+        <div class="sentiment-row">
+          <span class="sentiment-label">连板情绪</span>
+          <span class="sentiment-value up">极度高涨</span>
+        </div>
+        <div class="sentiment-verdict">⚡ 赚钱效应爆棚，积极打板，优选龙头</div>
+      </div>
+    </section>
+
+    <section class="section fade-in" id="catalyst">
+      <div class="section-title">
+        <div class="icon" style="background:var(--accent-purple-dim);color:var(--accent-purple);">🔥</div>
+        <h2>催化逻辑</h2>
+      </div>
+
+      <div class="tab-row">
+        <button class="tab-btn active" data-tab="news">消息面</button>
+        <button class="tab-btn" data-tab="policy">政策面</button>
+        <button class="tab-btn" data-tab="futures">期货联动</button>
+        <button class="tab-btn" data-tab="usstock">美股联动</button>
+      </div>
+
+      <div class="tab-content active" id="tab-news">
+        <div class="news-list" id="newsList"></div>
+      </div>
+
+      <div class="tab-content" id="tab-policy">
+        <div class="policy-list" id="policyList"></div>
+      </div>
+
+      <div class="tab-content" id="tab-futures">
+        <div class="futures-grid" id="futuresGrid"></div>
+      </div>
+
+      <div class="tab-content" id="tab-usstock">
+        <div class="us-stock-list" id="usStockList"></div>
+      </div>
+    </section>
+
+    <section class="section fade-in" id="sector">
+      <div class="section-title">
+        <div class="icon" style="background:var(--accent-red-dim);color:var(--accent-red);">🌡️</div>
+        <h2>板块热度</h2>
+        <span class="tag" style="background:var(--accent-red-dim);color:var(--accent-red);">资金聚焦</span>
+      </div>
+      <div class="sector-grid" id="sectorGrid"></div>
+    </section>
+
+    <section class="section fade-in" id="stocks">
+      <div class="section-title">
+        <div class="icon" style="background:var(--accent-gold-dim);color:var(--accent-gold);">⭐</div>
+        <h2>重点推荐</h2>
+        <span class="tag" style="background:var(--accent-gold-dim);color:var(--accent-gold);">深度分析</span>
+      </div>
+      <div id="stockCards"></div>
+    </section>
+
+    <section class="section fade-in" id="trend">
+      <div class="section-title">
+        <div class="icon" style="background:var(--accent-green-dim);color:var(--accent-green);">📈</div>
+        <h2>趋势大牛</h2>
+        <span class="tag" style="background:var(--accent-green-dim);color:var(--accent-green);">上涨中段</span>
+      </div>
+      <div id="trendCards"></div>
+    </section>
+
+    <section class="section fade-in" id="discipline">
+      <div class="section-title">
+        <div class="icon" style="background:var(--accent-blue-dim);color:var(--accent-blue);">🛡️</div>
+        <h2>风控纪律</h2>
+      </div>
+      <div class="discipline-grid">
+        <div class="discipline-card">
+          <h3>💰 仓位管理</h3>
+          <ul>
+            <li>单只个股仓位不超过总资金20%</li>
+            <li>同一板块持仓不超过总资金30%</li>
+            <li>总仓位控制在60%-80%，保留现金应对极端行情</li>
+            <li>盈利仓位可适当加仓，亏损仓位严禁补仓摊薄</li>
+          </ul>
+        </div>
+        <div class="discipline-card">
+          <h3>🎯 买入纪律</h3>
+          <ul>
+            <li>只在分歧转一致时买入，不追一致后的缩量板</li>
+            <li>买入前必须确认题材逻辑成立，不买纯跟风股</li>
+            <li>严格执行分批建仓，首次买入不超过计划仓位1/3</li>
+            <li>机构重仓股需等待回调至关键支撑位再介入</li>
+          </ul>
+        </div>
+        <div class="discipline-card">
+          <h3>🔒 持有纪律</h3>
+          <ul>
+            <li>龙头股持有至题材退潮或出现明确见顶信号</li>
+            <li>设置止盈线：盈利20%以上分批止盈</li>
+            <li>设置止损线：亏损8%无条件止损</li>
+            <li>不因短期波动随意改变持有计划</li>
+          </ul>
+        </div>
+        <div class="discipline-card">
+          <h3>⚠️ 风险警示</h3>
+          <ul>
+            <li>当前未检测到极高风险标的</li>
+            <li>连板股断板后观察2日，不反包则离场</li>
+            <li>注意资金面双流出标的，谨慎参与</li>
+            <li>涨幅较大标的注意追高风险</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="disclaimer">
+      <p>风险提示：本报告由量化模型自动生成，所有分析基于历史数据和统计规律，不构成任何投资建议。股市有风险，投资需谨慎。过往表现不代表未来收益。</p>
+      <div class="brand">—— Stock Alpha 智能选股系统 V1.0 ——</div>
+    </div>
   </div>
 
-  <div class="info">
-    <div><span class="pulse"></span> 实时渲染</div>
-    <div><span class="pulse"></span> 鼠标交互</div>
-  </div>
+  <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
   <script>
-    const canvas = document.getElementById('mossCanvas');
-    const ctx = canvas.getContext('2d');
-    
-    let mouseX = 0;
-    let mouseY = 0;
-    let particles = [];
-    const particleCount = 500;
+    (function() {
+      var ua = navigator.userAgent;
+      var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua);
+      var isIOS = /iPhone|iPad|iPod/i.test(ua);
+      var isAndroid = /Android/i.test(ua);
 
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
+      if (isMobile) document.body.classList.add('is-mobile');
+      if (isIOS) document.body.classList.add('is-ios');
+      if (isAndroid) document.body.classList.add('is-android');
 
-    function createParticles() {
-      particles = [];
-      for (let i = 0; i < particleCount; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const radius = 50 + Math.random() * 200;
-        particles.push({
-          x: canvas.width / 2 + Math.cos(angle) * radius,
-          y: canvas.height / 2 + Math.sin(angle) * radius,
-          size: 2 + Math.random() * 4,
-          speed: 0.1 + Math.random() * 0.3,
-          color: `hsl(${100 + Math.random() * 40}, ${60 + Math.random() * 30}%, ${20 + Math.random() * 30}%)`,
-          baseHeight: 1 + Math.random() * 3,
-          offset: Math.random() * Math.PI * 2
+      var indices = [
+        { name: '上证指数', value: '4112.16', change: '+0.11%', dir: 'up' },
+        { name: '深证成指', value: '15107.55', change: '-0.09%', dir: 'down' },
+        { name: '创业板指', value: '3677.15', change: '-0.27%', dir: 'down' },
+        { name: '沪深300', value: '4807.31', change: '-0.06%', dir: 'down' },
+        { name: '上证50', value: '2985.50', change: '+0.61%', dir: 'up' },
+        { name: '中证500', value: '8349.51', change: '+0.08%', dir: 'up' },
+        { name: '中证1000', value: '8381.95', change: '+0.47%', dir: 'up' },
+        { name: '道琼斯', value: '46247.29', change: '+0.65%', dir: 'up' },
+        { name: '纳斯达克', value: '22484.07', change: '+0.44%', dir: 'up' },
+        { name: '标普500', value: '6643.70', change: '+0.59%', dir: 'up' },
+        { name: '恒生指数', value: '25776.53', change: '-1.28%', dir: 'down' }
+      ];
+
+      var indexHtml = '';
+      indices.forEach(function(idx) {
+        indexHtml += '<div class="index-card">' +
+          '<div class="name">' + idx.name + '</div>' +
+          '<div class="value ' + idx.dir + '">' + idx.value + '</div>' +
+          '<div class="change ' + idx.dir + '">' + idx.change + '</div>' +
+          '</div>';
+      });
+      document.getElementById('indexGrid').innerHTML = indexHtml;
+
+      var news = [
+        { title: '商业航天密集发射', desc: '近期商业航天发射任务密集，卫星互联网产业链持续受益', color: 'var(--accent-red)' },
+        { title: 'AI算力需求爆发', desc: '国内外大厂持续加大AI算力投入，光模块/PCB/服务器需求旺盛', color: 'var(--accent-blue)' },
+        { title: '锂价触底反弹', desc: '碳酸锂期货价格持续反弹，锂矿企业估值修复', color: 'var(--accent-green)' },
+        { title: '电力体制改革深化', desc: '电力市场化改革加速推进，电力企业盈利预期改善', color: 'var(--accent-gold)' },
+        { title: '地产政策持续宽松', desc: '多地出台地产支持政策，家装/建材需求有望回暖', color: 'var(--accent-purple)' },
+        { title: '钨价持续上涨', desc: '钨价创近年新高，钨产业链企业利润弹性大', color: 'var(--accent-red)' },
+        { title: '5G-A商用加速', desc: '运营商5G-A网络建设加速，通信设备需求增长', color: 'var(--accent-blue)' },
+        { title: '氢能产业政策加码', desc: '多省出台氢能产业发展规划，氢能产业链加速落地', color: 'var(--accent-green)' }
+      ];
+
+      var newsHtml = '';
+      news.forEach(function(n) {
+        newsHtml += '<div class="news-item">' +
+          '<div class="news-dot" style="background:' + n.color + '"></div>' +
+          '<div><div class="title">' + n.title + '</div><div class="desc">' + n.desc + '</div></div>' +
+          '</div>';
+      });
+      document.getElementById('newsList').innerHTML = newsHtml;
+
+      var policies = [
+        { source: '国务院', text: '印发《关于深化电力体制改革加快构建新型电力系统的指导意见》' },
+        { source: '工信部', text: '发布《关于推进5G-A商用部署的通知》' },
+        { source: '发改委', text: '加快推进商业航天产业发展' },
+        { source: '自然资源部', text: '支持稀土产业发展，加强战略资源保护' },
+        { source: '住建部', text: '进一步优化房地产调控政策，支持刚性和改善性住房需求' }
+      ];
+
+      var policyHtml = '';
+      policies.forEach(function(p) {
+        policyHtml += '<div class="policy-item">' +
+          '<span class="policy-source">' + p.source + '</span>' +
+          '<span class="policy-text">' + p.text + '</span>' +
+          '</div>';
+      });
+      document.getElementById('policyList').innerHTML = policyHtml;
+
+      var futures = [
+        { name: '碳酸锂', price: '112,500', change: '+2.35%', signal: '强势', signalClass: 'strong' },
+        { name: '螺纹钢', price: '3,650', change: '+0.55%', signal: '中性', signalClass: 'neutral' },
+        { name: '沪铜', price: '72,500', change: '+1.20%', signal: '偏强', signalClass: 'strong' },
+        { name: '沪金', price: '568.50', change: '+0.85%', signal: '偏强', signalClass: 'strong' },
+        { name: '纯碱', price: '1,850', change: '-1.50%', signal: '弱势', signalClass: 'weak' }
+      ];
+
+      var futuresHtml = '';
+      futures.forEach(function(f) {
+        var dir = f.change.startsWith('+') ? 'up' : 'down';
+        futuresHtml += '<div class="futures-card">' +
+          '<div class="futures-name">' + f.name + '</div>' +
+          '<div class="futures-price ' + dir + '">' + f.price + '</div>' +
+          '<div class="' + dir + '" style="font-size:0.78rem;font-weight:600;margin-top:2px;">' + f.change + '</div>' +
+          '<span class="futures-signal ' + f.signalClass + '">' + f.signal + '</span>' +
+          '</div>';
+      });
+      document.getElementById('futuresGrid').innerHTML = futuresHtml;
+
+      var usStocks = [
+        { sector: '半导体', change: '+0.66%', signal: '偏强', dir: 'up', impact: '利好国内半导体产业链' },
+        { sector: '科技', change: '+0.53%', signal: '偏强', dir: 'up', impact: '利好国内科技板块' },
+        { sector: '新能源', change: '+0.35%', signal: '中性', dir: 'up', impact: '利好国内新能源板块' },
+        { sector: '消费', change: '+0.22%', signal: '中性', dir: 'up', impact: '利好国内消费板块' }
+      ];
+
+      var usHtml = '';
+      usStocks.forEach(function(s) {
+        usHtml += '<div class="us-stock-item">' +
+          '<div class="us-stock-left"><div class="sector">' + s.sector + '</div><div class="impact">' + s.impact + '</div></div>' +
+          '<div class="us-stock-right"><div class="change ' + s.dir + '">' + s.change + '</div><span class="futures-signal ' + (s.signal === '偏强' ? 'strong' : 'neutral') + '">' + s.signal + '</span></div>' +
+          '</div>';
+      });
+      document.getElementById('usStockList').innerHTML = usHtml;
+
+      var sectors = [
+        { name: '先进封装', change: '+3.82%', flow: '+26.24亿', leader: '芯原股份', heat: 'hot' },
+        { name: '卫星互联网', change: '+2.22%', flow: '+23.49亿', leader: '中国卫星', heat: 'hot' },
+        { name: '航天航空', change: '+1.78%', flow: '+16.74亿', leader: '中国卫星', heat: 'hot' },
+        { name: '北斗导航', change: '+1.70%', flow: '+43.82亿', leader: '中国长城', heat: 'hot' },
+        { name: '国产芯片', change: '+1.63%', flow: '+47.79亿', leader: '中国长城', heat: 'hot' },
+        { name: '商业航天', change: '+1.31%', flow: '+75.62亿', leader: '中国长城', heat: 'hot' },
+        { name: '军民融合', change: '+1.25%', flow: '+31.88亿', leader: '中国长城', heat: 'warm' },
+        { name: '军工', change: '+1.12%', flow: '+41.78亿', leader: '中国长城', heat: 'warm' },
+        { name: '低空经济', change: '+0.58%', flow: '+22.09亿', leader: '创世纪', heat: 'warm' },
+        { name: '无人机', change: '+0.74%', flow: '+21.44亿', leader: '天齐锂业', heat: 'warm' }
+      ];
+
+      var sectorHtml = '';
+      sectors.forEach(function(s) {
+        sectorHtml += '<div class="sector-card ' + s.heat + '">' +
+          '<div class="sector-name">' + s.name + '</div>' +
+          '<div class="sector-change up">' + s.change + '</div>' +
+          '<div class="sector-flow">主力净流入 ' + s.flow + '</div>' +
+          '<div class="sector-leader">领涨 ' + s.leader + '</div>' +
+          '</div>';
+      });
+      document.getElementById('sectorGrid').innerHTML = sectorHtml;
+
+      var stocks = [
+        {
+          name: '德明利', code: '001309', price: '447.24', sector: '存储芯片',
+          stars: 5, logic: '存储主控芯片龙头，受益于AI算力存储需求爆发+存储超级周期，2026Q1营收+502%净利润+4943%扭亏为盈',
+          catalysts: [
+            { text: '存储超级周期', type: 'news' },
+            { text: 'AI算力需求', type: 'news' },
+            { text: '业绩暴增', type: 'capital' }
+          ],
+          advice: '谨慎参与', adviceClass: 'caution'
+        },
+        {
+          name: '通鼎互联', code: '002491', price: '15.80', sector: '通信设备',
+          stars: 4, logic: '光纤光缆龙头，通信设备+网络安全双主业，28亿大单',
+          catalysts: [
+            { text: '光纤涨价', type: 'news' },
+            { text: '国产替代', type: 'policy' },
+            { text: '大额订单', type: 'capital' }
+          ],
+          advice: '谨慎参与', adviceClass: 'caution'
+        },
+        {
+          name: '中国长城', code: '000066', price: '19.82', sector: '信创',
+          stars: 2, logic: '国产CPU（飞腾）+整机龙头，信创核心标的',
+          catalysts: [
+            { text: '信创采购', type: 'policy' },
+            { text: '国产替代', type: 'policy' }
+          ],
+          advice: '观望为主', adviceClass: 'caution'
+        },
+        {
+          name: '立讯精密', code: '002475', price: '65.73', sector: '消费电子',
+          stars: 3, logic: '消费电子制造龙头，苹果+汽车电子双驱动',
+          catalysts: [
+            { text: '苹果新品', type: 'news' },
+            { text: '汽车电子放量', type: 'capital' }
+          ],
+          advice: '谨慎参与', adviceClass: 'caution'
+        },
+        {
+          name: '赤天化', code: '600227', price: '4.09', sector: '化工化肥',
+          stars: 4, logic: '化工化肥龙头，尿素+甲醇+医药双主业，贵州煤化工核心标的',
+          catalysts: [
+            { text: '化肥涨价', type: 'news' },
+            { text: '煤化工景气', type: 'capital' },
+            { text: '医药转型', type: 'news' }
+          ],
+          advice: '谨慎参与', adviceClass: 'caution'
+        }
+      ];
+
+      var stockHtml = '';
+      stocks.forEach(function(s) {
+        var starsHtml = '';
+        for (var i = 0; i < 5; i++) {
+          starsHtml += '<span class="star' + (i < s.stars ? '' : ' dim') + '">★</span>';
+        }
+        var catalystsHtml = '';
+        s.catalysts.forEach(function(c) {
+          catalystsHtml += '<span class="catalyst-tag ' + c.type + '">' + c.text + '</span>';
         });
-      }
-    }
+        stockHtml += '<div class="stock-card">' +
+          '<div class="stock-header">' +
+            '<div class="stock-name-block">' +
+              '<span class="name">' + s.name + '</span><span class="code">' + s.code + '</span>' +
+              '<div><span class="sector-tag">' + s.sector + '</span></div>' +
+            '</div>' +
+            '<div class="stock-price">' +
+              '<div class="price">' + s.price + '</div>' +
+              '<div class="stock-stars">' + starsHtml + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="stock-logic">' +
+            '<div class="label">上涨逻辑</div>' +
+            '<div class="text">' + s.logic + '</div>' +
+          '</div>' +
+          '<div class="stock-catalyst">' + catalystsHtml + '</div>' +
+          '<div class="stock-advice">' +
+            '<span class="advice-label">操作建议</span>' +
+            '<span class="advice-text ' + s.adviceClass + '">' + s.advice + '</span>' +
+          '</div>' +
+          '</div>';
+      });
+      document.getElementById('stockCards').innerHTML = stockHtml;
 
-    function animate() {
-      ctx.fillStyle = 'rgba(5, 16, 3, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      var trends = [
+        {
+          name: '博云新材', code: '002297', score: 90, scoreClass: 'high',
+          stage: '上升末期', stageClass: 'risk',
+          logic: '商业航天碳/碳复合材料绝对龙头，飞机刹车副国内垄断市占率超80%，航天发动机部件核心供应商',
+          details: [
+            { label: '趋势阶段', value: '上升末期' },
+            { label: '逻辑硬度', value: '★★★★★' }
+          ],
+          advice: '涨幅较大，注意风险', adviceClass: 'risk'
+        },
+        {
+          name: '通鼎互联', code: '002491', score: 90, scoreClass: 'high',
+          stage: '上升中段', stageClass: 'buy',
+          logic: '光纤光缆龙头，通信设备+网络安全双主业，28亿大单',
+          details: [
+            { label: '趋势阶段', value: '上升中段' },
+            { label: '逻辑硬度', value: '★★★★☆' }
+          ],
+          advice: '趋势中段，可介入', adviceClass: 'buy'
+        },
+        {
+          name: '美诺华', code: '603538', score: 87, scoreClass: 'high',
+          stage: '上升末期', stageClass: 'risk',
+          logic: '特色原料药+CDMO一体化龙头，独立逻辑趋势龙头',
+          details: [
+            { label: '趋势阶段', value: '上升末期' },
+            { label: '逻辑硬度', value: '★★★★☆' }
+          ],
+          advice: '涨幅较大，注意风险', adviceClass: 'risk'
+        },
+        {
+          name: '维科技术', code: '600152', score: 82, scoreClass: 'mid',
+          stage: '上升中段', stageClass: 'buy',
+          logic: '市场活跃标的，趋势形态良好',
+          details: [
+            { label: '趋势阶段', value: '上升中段' },
+            { label: '逻辑硬度', value: '★★★☆☆' }
+          ],
+          advice: '趋势中段，可介入', adviceClass: 'buy'
+        },
+        {
+          name: '大为股份', code: '002213', score: 80, scoreClass: 'mid',
+          stage: '上升中段', stageClass: 'buy',
+          logic: '市场活跃标的，趋势形态良好',
+          details: [
+            { label: '趋势阶段', value: '上升中段' },
+            { label: '逻辑硬度', value: '★★★☆☆' }
+          ],
+          advice: '趋势中段，可介入', adviceClass: 'buy'
+        },
+        {
+          name: '华电辽能', code: '600396', score: 80, scoreClass: 'mid',
+          stage: '上升中段', stageClass: 'buy',
+          logic: '市场活跃标的，趋势形态良好',
+          details: [
+            { label: '趋势阶段', value: '上升中段' },
+            { label: '逻辑硬度', value: '★★★☆☆' }
+          ],
+          advice: '趋势中段，可介入', adviceClass: 'buy'
+        },
+        {
+          name: '德明利', code: '001309', score: 75, scoreClass: 'mid',
+          stage: '上升中段', stageClass: 'buy',
+          logic: '存储主控芯片龙头，受益于AI算力存储需求爆发+存储超级周期',
+          details: [
+            { label: '趋势阶段', value: '上升中段' },
+            { label: '逻辑硬度', value: '★★★★★' }
+          ],
+          advice: '趋势中段，可介入', adviceClass: 'buy'
+        },
+        {
+          name: '金螳螂', code: '002081', score: 75, scoreClass: 'mid',
+          stage: '上升末期', stageClass: 'risk',
+          logic: '公装龙头，半导体先进封装供应链',
+          details: [
+            { label: '趋势阶段', value: '上升末期' },
+            { label: '逻辑硬度', value: '★★★★☆' }
+          ],
+          advice: '涨幅较大，注意风险', adviceClass: 'risk'
+        },
+        {
+          name: '丰元股份', code: '002805', score: 75, scoreClass: 'mid',
+          stage: '上升中段', stageClass: 'buy',
+          logic: '市场活跃标的，趋势形态良好',
+          details: [
+            { label: '趋势阶段', value: '上升中段' },
+            { label: '逻辑硬度', value: '★★★☆☆' }
+          ],
+          advice: '趋势中段，可介入', adviceClass: 'buy'
+        },
+        {
+          name: '立讯精密', code: '002475', score: 74, scoreClass: 'mid',
+          stage: '上升中段', stageClass: 'buy',
+          logic: '消费电子制造龙头，苹果+汽车电子双驱动',
+          details: [
+            { label: '趋势阶段', value: '上升中段' },
+            { label: '逻辑硬度', value: '★★★☆☆' }
+          ],
+          advice: '趋势中段，可介入', adviceClass: 'buy'
+        }
+      ];
 
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
+      var trendHtml = '';
+      trends.forEach(function(t) {
+        var detailHtml = '';
+        t.details.forEach(function(d) {
+          detailHtml += '<div class="trend-detail-item">' + d.label + ' <span>' + d.value + '</span></div>';
+        });
+        trendHtml += '<div class="trend-card">' +
+          '<div class="trend-top">' +
+            '<div class="trend-name">' + t.name + '<span class="code">' + t.code + '</span></div>' +
+            '<span class="trend-score ' + t.scoreClass + '">' + t.score + '分</span>' +
+          '</div>' +
+          '<div class="trend-bar"><div class="trend-bar-fill ' + t.scoreClass + '" style="width:' + t.score + '%"></div></div>' +
+          '<div class="stock-logic" style="margin-bottom:10px;">' +
+            '<div class="label">上涨逻辑</div>' +
+            '<div class="text">' + t.logic + '</div>' +
+          '</div>' +
+          '<div class="trend-detail">' + detailHtml + '</div>' +
+          '<span class="trend-advice ' + t.adviceClass + '">' + t.advice + '</span>' +
+          '</div>';
+      });
+      document.getElementById('trendCards').innerHTML = trendHtml;
 
-      particles.forEach((p, i) => {
-        const dx = mouseX - p.x;
-        const dy = mouseY - p.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        const influence = Math.max(0, 1 - distance / 200);
-        const height = p.baseHeight + influence * 5;
-        const sway = Math.sin(Date.now() * 0.002 + p.offset) * 10;
-
-        const gradient = ctx.createRadialGradient(
-          p.x + sway, p.y, 0,
-          p.x + sway, p.y, p.size * height
-        );
-        
-        const brightness = 30 + influence * 30;
-        gradient.addColorStop(0, `hsla(${100 + influence * 20}, 70%, ${brightness}%, 0.8)`);
-        gradient.addColorStop(0.5, `hsla(${100 + influence * 10}, 60%, ${brightness - 10}%, 0.4)`);
-        gradient.addColorStop(1, 'transparent');
-
-        ctx.beginPath();
-        ctx.arc(p.x + sway, p.y - height * 5, p.size * (1 + influence), 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
-        ctx.fill();
+      document.querySelectorAll('.tab-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var tab = this.getAttribute('data-tab');
+          document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+          document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+          this.classList.add('active');
+          document.getElementById('tab-' + tab).classList.add('active');
+        });
       });
 
-      const coreGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 150);
-      coreGradient.addColorStop(0, 'hsla(120, 80%, 50%, 0.2)');
-      coreGradient.addColorStop(1, 'transparent');
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, 150, 0, Math.PI * 2);
-      ctx.fillStyle = coreGradient;
-      ctx.fill();
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
 
-      requestAnimationFrame(animate);
-    }
+      document.querySelectorAll('.fade-in').forEach(function(el) {
+        observer.observe(el);
+      });
 
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
+      var navLinks = document.querySelectorAll('.nav-bar a');
+      var sections = document.querySelectorAll('.section');
+      var navBar = document.getElementById('navBar');
 
-    window.addEventListener('resize', () => {
-      resize();
-      createParticles();
-    });
+      window.addEventListener('scroll', function() {
+        var scrollPos = window.scrollY || window.pageYOffset;
 
-    resize();
-    createParticles();
-    animate();
+        navLinks.forEach(function(link) {
+          link.classList.remove('active');
+        });
+
+        for (var i = sections.length - 1; i >= 0; i--) {
+          if (sections[i].offsetTop - 80 <= scrollPos) {
+            var id = sections[i].id;
+            var activeLink = document.querySelector('.nav-bar a[href="#' + id + '"]');
+            if (activeLink) {
+              activeLink.classList.add('active');
+              if (activeLink.offsetLeft > navBar.scrollLeft + navBar.clientWidth - 80 ||
+                  activeLink.offsetLeft < navBar.scrollLeft) {
+                activeLink.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+              }
+            }
+            break;
+          }
+        });
+
+        var scrollTopBtn = document.getElementById('scrollTopBtn');
+        if (scrollPos > 400) {
+          scrollTopBtn.classList.add('show');
+        } else {
+          scrollTopBtn.classList.remove('show');
+        }
+      });
+
+      navLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          var target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            var offset = navBar.offsetHeight + 10;
+            var top = target.offsetTop - offset;
+            window.scrollTo({ top: top, behavior: 'smooth' });
+          }
+        });
+      });
+    })();
   </script>
 </body>
 </html>
