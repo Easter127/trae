@@ -713,7 +713,13 @@
         advice: '谨慎参与', adviceClass: 'caution'
       }
     ];
-    document.getElementById('stockList').innerHTML = stocks.map(s => `
+    // 排序：上涨的放前面，下跌的放后面
+    const sortedStocks = [...stocks].sort((a, b) => {
+      if (a.changeDir === 'up' && b.changeDir === 'down') return -1;
+      if (a.changeDir === 'down' && b.changeDir === 'up') return 1;
+      return 0;
+    });
+    document.getElementById('stockList').innerHTML = sortedStocks.map((s, originalIndex) => `
       <div class="stock-card">
         <div class="stock-top">
           <div class="stock-info">
@@ -797,7 +803,13 @@
         advice: '趋势中段，可介入', adviceClass: 'buy'
       }
     ];
-    document.getElementById('trendList').innerHTML = trends.map(t => `
+    // 排序：上涨的放前面，下跌的放后面
+    const sortedTrends = [...trends].sort((a, b) => {
+      if (a.dir === 'up' && b.dir === 'down') return -1;
+      if (a.dir === 'down' && b.dir === 'up') return 1;
+      return 0;
+    });
+    document.getElementById('trendList').innerHTML = sortedTrends.map((t) => `
       <div class="trend-card">
         <div class="trend-top">
           <div>
@@ -822,12 +834,12 @@
     `).join('');
     setTimeout(() => {
       document.querySelectorAll('.stock-card .change-bar-fill').forEach((bar, i) => {
-        const target = Math.min(100, Math.abs(stocks[i].changeVal) * 10);
+        const target = Math.min(100, Math.abs(sortedStocks[i].changeVal) * 10);
         setTimeout(() => { bar.style.width = target + '%'; }, i * 80);
       });
       document.querySelectorAll('.trend-card .change-bar-fill').forEach((bar, i) => {
-        const target = Math.min(100, Math.abs(trends[i].changeVal) * 10);
-        setTimeout(() => { bar.style.width = target + '%'; }, (i + stocks.length) * 80);
+        const target = Math.min(100, Math.abs(sortedTrends[i].changeVal) * 10);
+        setTimeout(() => { bar.style.width = target + '%'; }, (i + sortedStocks.length) * 80);
       });
     }, 300);
     document.querySelectorAll('.tab').forEach(tab => {
