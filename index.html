@@ -13,17 +13,17 @@
       --text: #e6e6ff;
       --text-dim: #8888aa;
       --cyan: #00ffff;
-      --cyan-soft: rgba(0, 255, 255, 0.12);
-      --cyan-glow: rgba(0, 255, 255, 0.25);
+      --cyan-soft: rgba(0,255,255,0.12);
+      --cyan-glow: rgba(0,255,255,0.25);
       --pink: #ff0088;
-      --pink-soft: rgba(255, 0, 136, 0.12);
-      --pink-glow: rgba(255, 0, 136, 0.25);
+      --pink-soft: rgba(255,0,136,0.12);
+      --pink-glow: rgba(255,0,136,0.25);
       --green: #00ff88;
-      --green-soft: rgba(0, 255, 136, 0.12);
+      --green-soft: rgba(0,255,136,0.12);
       --red: #ff4444;
-      --red-soft: rgba(255, 68, 68, 0.12);
+      --red-soft: rgba(255,68,68,0.12);
       --yellow: #ffcc00;
-      --yellow-soft: rgba(255, 204, 0, 0.12);
+      --yellow-soft: rgba(255,204,0,0.12);
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -36,58 +36,54 @@
       content: '';
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.08) 0%, transparent 40%),
-                  radial-gradient(circle at 80% 60%, rgba(255, 0, 136, 0.08) 0%, transparent 40%);
+      background: radial-gradient(circle at 20% 20%, rgba(0,255,255,0.08) 0%, transparent 40%),
+                  radial-gradient(circle at 80% 60%, rgba(255,0,136,0.08) 0%, transparent 40%);
       pointer-events: none;
       z-index: 0;
     }
     .wrapper { position: relative; z-index: 1; }
     header {
-      background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 136, 0.08) 100%);
-      padding: 16px 14px 12px;
+      background: linear-gradient(135deg, rgba(0,255,255,0.1) 0%, rgba(255,0,136,0.08) 100%);
+      padding: 10px 12px 8px;
       border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(10px);
     }
     .header-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     .brand-icon {
-      width: 38px; height: 38px;
-      border-radius: 10px;
+      width: 32px; height: 32px;
+      border-radius: 8px;
       background: linear-gradient(135deg, var(--cyan), var(--pink));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      box-shadow: 0 0 15px var(--cyan-glow), 0 0 25px var(--pink-glow);
+      font-size: 16px;
+      box-shadow: 0 0 12px var(--cyan-glow), 0 0 18px var(--pink-glow);
       animation: pulse-icon 2s ease-in-out infinite;
     }
     @keyframes pulse-icon {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.05); }
     }
-    .brand h1 { font-size: 19px; font-weight: 800; letter-spacing: 0.5px; }
-    .brand p { font-size: 11px; color: var(--text-dim); }
+    .brand h1 { font-size: 17px; font-weight: 800; letter-spacing: 0.5px; }
+    .brand p { font-size: 10px; color: var(--text-dim); }
     .status {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 11px; color: var(--text-dim);
+      display: flex; align-items: center; gap: 4px;
+      font-size: 10px; color: var(--text-dim);
       font-family: 'SF Mono', 'Monaco', monospace;
     }
     .status-dot {
-      width: 8px; height: 8px; border-radius: 50%;
+      width: 6px; height: 6px; border-radius: 50%;
       background: var(--green);
-      box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+      box-shadow: 0 0 6px rgba(0,255,136,0.6);
       animation: blink 1.5s infinite;
     }
     @keyframes blink {
@@ -95,15 +91,15 @@
       50% { opacity: 0.3; }
     }
     nav {
-      display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
-      padding-bottom: 4px;
+      display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none;
+      padding-bottom: 0;
     }
     nav::-webkit-scrollbar { display: none; }
     nav a {
       flex-shrink: 0;
-      padding: 7px 14px;
-      border-radius: 20px;
-      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 14px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--text-dim);
       border: 1px solid var(--border);
@@ -115,12 +111,12 @@
       color: var(--text);
       border-color: var(--cyan);
       background: var(--cyan-soft);
-      box-shadow: 0 0 12px var(--cyan-glow);
+      box-shadow: 0 0 8px var(--cyan-glow);
     }
-    main { padding: 14px; }
+    main { padding: 10px 12px; }
     .section-title {
-      display: flex; align-items: center; gap: 10px;
-      margin: 20px 0 12px;
+      display: flex; align-items: center; gap: 8px;
+      margin: 14px 0 8px;
     }
     .section-title h2 {
       font-size: 13px; font-weight: 800; letter-spacing: 2px;
@@ -137,11 +133,11 @@
     }
     .section-title .line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
     .index-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
     }
     .index-card {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px; position: relative; overflow: hidden;
+      border-radius: 10px; padding: 10px; position: relative; overflow: hidden;
     }
     .index-card::after {
       content: ''; position: absolute; top: 0; right: 0; width: 50px; height: 50px;
@@ -159,46 +155,46 @@
     .up { color: var(--red); }
     .down { color: var(--green); }
     .sentiment {
-      background: linear-gradient(135deg, var(--card), rgba(0, 255, 255, 0.03));
+      background: linear-gradient(135deg, var(--card), rgba(0,255,255,0.03));
       border: 1px solid var(--border);
-      border-radius: 14px; padding: 14px; margin-top: 12px;
+      border-radius: 14px; padding: 12px; margin-top: 10px;
     }
-    .sentiment-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .sentiment-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
     .sentiment-item { display: flex; justify-content: space-between; align-items: center; }
-    .sentiment-label { font-size: 12px; color: var(--text-dim); }
-    .sentiment-val { font-size: 14px; font-weight: 700; font-family: 'SF Mono', 'Monaco', monospace; }
+    .sentiment-label { font-size: 11px; color: var(--text-dim); }
+    .sentiment-val { font-size: 13px; font-weight: 700; font-family: 'SF Mono', 'Monaco', monospace; }
     .sentiment-alert {
-      margin-top: 14px; padding: 10px 14px;
+      margin-top: 10px; padding: 8px 12px;
       border-left: 3px solid var(--yellow);
       background: var(--yellow-soft);
       border-radius: 0 10px 10px 0;
-      font-size: 12px; font-weight: 600; color: var(--yellow);
+      font-size: 11px; font-weight: 600; color: var(--yellow);
     }
     .tabs {
-      display: flex; gap: 6px; margin-bottom: 12px;
+      display: flex; gap: 4px; margin-bottom: 8px;
       background: var(--card); border: 1px solid var(--border);
       padding: 4px; border-radius: 10px;
     }
     .tab {
-      flex: 1; padding: 8px; text-align: center; font-size: 12px; font-weight: 700;
+      flex: 1; padding: 7px; text-align: center; font-size: 11px; font-weight: 700;
       color: var(--text-dim); border-radius: 7px; cursor: pointer;
     }
     .tab.active {
       background: linear-gradient(135deg, var(--cyan-soft), var(--pink-soft));
       color: var(--text); border: 1px solid var(--cyan);
-      box-shadow: 0 0 15px var(--cyan-glow);
+      box-shadow: 0 0 12px var(--cyan-glow);
     }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
-    .news-list { display: flex; flex-direction: column; gap: 8px; }
+    .news-list { display: flex; flex-direction: column; gap: 6px; }
     .news-item {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px; display: flex; gap: 10px;
+      border-radius: 10px; padding: 10px; display: flex; gap: 8px;
     }
     .news-icon {
-      width: 36px; height: 36px; border-radius: 10px;
+      width: 32px; height: 32px; border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
+      font-size: 16px;
     }
     .news-icon.red { background: var(--red-soft); }
     .news-icon.cyan { background: var(--cyan-soft); }
@@ -206,64 +202,64 @@
     .news-icon.yellow { background: var(--yellow-soft); }
     .news-icon.pink { background: var(--pink-soft); }
     .news-text { flex: 1; }
-    .news-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
-    .news-desc { font-size: 12px; color: var(--text-dim); }
-    .policy-list { display: flex; flex-direction: column; gap: 8px; }
+    .news-title { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+    .news-desc { font-size: 11px; color: var(--text-dim); }
+    .policy-list { display: flex; flex-direction: column; gap: 6px; }
     .policy-item {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px; display: flex; gap: 10px; align-items: center;
+      border-radius: 10px; padding: 10px; display: flex; gap: 8px; align-items: center;
     }
     .policy-source {
-      font-size: 10px; padding: 4px 8px; border-radius: 4px;
+      font-size: 9px; padding: 3px 7px; border-radius: 4px;
       background: var(--pink-soft); color: var(--pink); font-weight: 800;
     }
-    .policy-text { font-size: 12px; }
+    .policy-text { font-size: 11px; }
     .futures-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
     }
     .futures-card {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px; text-align: center;
+      border-radius: 10px; padding: 10px; text-align: center;
     }
-    .futures-name { font-size: 12px; font-weight: 700; color: var(--text-dim); }
-    .futures-price { font-size: 16px; font-weight: 700; margin-top: 4px; font-family: 'SF Mono', monospace; }
-    .futures-change { font-size: 12px; font-weight: 700; margin-top: 2px; font-family: 'SF Mono', monospace; }
+    .futures-name { font-size: 11px; font-weight: 700; color: var(--text-dim); }
+    .futures-price { font-size: 15px; font-weight: 700; margin-top: 4px; font-family: 'SF Mono', monospace; }
+    .futures-change { font-size: 11px; font-weight: 700; margin-top: 2px; font-family: 'SF Mono', monospace; }
     .futures-signal {
-      display: inline-block; font-size: 10px; font-weight: 800;
-      padding: 2px 8px; border-radius: 20px; margin-top: 6px;
+      display: inline-block; font-size: 9px; font-weight: 800;
+      padding: 2px 7px; border-radius: 14px; margin-top: 4px;
     }
     .futures-signal.strong { background: var(--red-soft); color: var(--red); }
     .futures-signal.neutral { background: var(--yellow-soft); color: var(--yellow); }
     .futures-signal.weak { background: var(--green-soft); color: var(--green); }
-    .us-list { display: flex; flex-direction: column; gap: 8px; }
+    .us-list { display: flex; flex-direction: column; gap: 6px; }
     .us-item {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px; display: flex; justify-content: space-between; align-items: center;
+      border-radius: 10px; padding: 10px; display: flex; justify-content: space-between; align-items: center;
     }
-    .us-name { font-size: 13px; font-weight: 700; }
-    .us-impact { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
-    .us-change { font-size: 15px; font-weight: 700; font-family: 'SF Mono', monospace; }
-    .sector-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .us-name { font-size: 12px; font-weight: 700; }
+    .us-impact { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+    .us-change { font-size: 14px; font-weight: 700; font-family: 'SF Mono', monospace; }
+    .sector-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
     @media (min-width: 640px) {
       .discipline-grid { grid-template-columns: repeat(2, 1fr); }
       .index-grid, .sector-grid { grid-template-columns: repeat(3, 1fr); }
     }
     .sector-card {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px; position: relative; overflow: hidden;
+      border-radius: 10px; padding: 10px; position: relative; overflow: hidden;
     }
     .sector-card::after {
       content: ''; position: absolute; top: 0; right: 0; width: 50px; height: 50px;
       background: radial-gradient(circle, var(--cyan-soft), transparent 60%);
     }
-    .sector-name { font-size: 12px; font-weight: 700; }
-    .sector-change { font-size: 18px; font-weight: 700; margin-top: 4px; font-family: 'SF Mono', monospace; }
-    .sector-flow { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
-    .sector-leader { font-size: 11px; color: var(--cyan); font-weight: 600; margin-top: 2px; }
-    .stock-list { display: flex; flex-direction: column; gap: 10px; }
+    .sector-name { font-size: 11px; font-weight: 700; }
+    .sector-change { font-size: 17px; font-weight: 700; margin-top: 4px; font-family: 'SF Mono', monospace; }
+    .sector-flow { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
+    .sector-leader { font-size: 10px; color: var(--cyan); font-weight: 600; margin-top: 2px; }
+    .stock-list { display: flex; flex-direction: column; gap: 8px; }
     .stock-card {
-      background: linear-gradient(135deg, var(--card), rgba(0, 255, 255, 0.03));
-      border: 1px solid var(--border); border-radius: 16px; padding: 14px; position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--card), rgba(0,255,255,0.03));
+      border: 1px solid var(--border); border-radius: 14px; padding: 12px; position: relative; overflow: hidden;
     }
     .stock-card::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
@@ -274,37 +270,37 @@
       0% { background-position: 0% 0; }
       100% { background-position: 200% 0; }
     }
-    .stock-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .stock-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
     .stock-info { flex: 1; }
-    .stock-name { font-size: 18px; font-weight: 800; }
-    .stock-code { font-size: 12px; color: var(--text-dim); margin-left: 6px; font-family: 'SF Mono', monospace; }
+    .stock-name { font-size: 17px; font-weight: 800; }
+    .stock-code { font-size: 11px; color: var(--text-dim); margin-left: 6px; font-family: 'SF Mono', monospace; }
     .stock-sector {
-      display: inline-block; font-size: 11px; font-weight: 700;
-      margin-top: 6px; padding: 3px 10px; border-radius: 4px;
+      display: inline-block; font-size: 10px; font-weight: 700;
+      margin-top: 6px; padding: 3px 9px; border-radius: 4px;
       background: var(--cyan-soft); color: var(--cyan);
     }
     .stock-price-wrap { text-align: right; }
-    .stock-price { font-size: 22px; font-weight: 700; font-family: 'SF Mono', monospace; }
-    .stock-change-label { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+    .stock-price { font-size: 21px; font-weight: 700; font-family: 'SF Mono', monospace; }
+    .stock-change-label { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
     .stock-change-value {
-      font-size: 16px; font-weight: 800; font-family: 'SF Mono', monospace;
+      font-size: 15px; font-weight: 800; font-family: 'SF Mono', monospace;
       display: inline-flex; align-items: center; gap: 4px;
     }
     .stock-stars { display: inline-flex; gap: 2px; margin-top: 4px; }
-    .star { color: var(--yellow); font-size: 14px; }
+    .star { color: var(--yellow); font-size: 13px; }
     .star.dim { color: var(--border); }
-    .change-bar { height: 12px; background: var(--border); border-radius: 6px; margin-top: 10px; overflow: hidden; }
+    .change-bar { height: 10px; background: var(--border); border-radius: 5px; margin-top: 8px; overflow: hidden; }
     .change-bar-fill {
-      height: 100%; border-radius: 6px;
+      height: 100%; border-radius: 5px;
       position: relative; transition: width 1.2s ease-out;
     }
     .change-bar-fill.up {
       background: linear-gradient(90deg, var(--red), #ff7777);
-      box-shadow: 0 0 12px rgba(255, 68, 68, 0.4);
+      box-shadow: 0 0 10px rgba(255,68,68,0.4);
     }
     .change-bar-fill.down {
       background: linear-gradient(90deg, var(--green), #55ff99);
-      box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
+      box-shadow: 0 0 10px rgba(0,255,136,0.4);
     }
     .change-bar-fill::after {
       content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -316,114 +312,114 @@
       100% { transform: translateX(100%); }
     }
     .stock-logic {
-      margin-top: 12px; padding: 10px 12px; border-left: 3px solid var(--yellow);
+      margin-top: 10px; padding: 9px 11px; border-left: 3px solid var(--yellow);
       background: var(--yellow-soft); border-radius: 0 10px 10px 0;
     }
-    .stock-logic-label { font-size: 11px; font-weight: 800; color: var(--yellow); margin-bottom: 3px; }
-    .stock-logic-text { font-size: 12px; color: var(--text); }
-    .stock-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .stock-logic-label { font-size: 10px; font-weight: 800; color: var(--yellow); margin-bottom: 3px; }
+    .stock-logic-text { font-size: 11px; color: var(--text); }
+    .stock-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
     .stock-tag {
-      font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+      font-size: 9px; font-weight: 700; padding: 3px 9px; border-radius: 14px;
       font-family: 'SF Mono', monospace;
     }
     .stock-tag.news { background: var(--cyan-soft); color: var(--cyan); }
     .stock-tag.policy { background: var(--pink-soft); color: var(--pink); }
     .stock-tag.capital { background: var(--green-soft); color: var(--green); }
     .stock-advice-wrap {
-      margin-top: 12px; display: flex; justify-content: space-between; align-items: center;
-      padding-top: 10px; border-top: 1px dashed var(--border);
+      margin-top: 10px; display: flex; justify-content: space-between; align-items: center;
+      padding-top: 9px; border-top: 1px dashed var(--border);
     }
-    .stock-advice-label { font-size: 11px; color: var(--text-dim); }
+    .stock-advice-label { font-size: 10px; color: var(--text-dim); }
     .stock-advice-text {
-      font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 800; padding: 4px 11px; border-radius: 14px;
       font-family: 'SF Mono', monospace;
     }
     .stock-advice-text.caution { background: var(--yellow-soft); color: var(--yellow); }
     .stock-advice-text.risk { background: var(--red-soft); color: var(--red); }
     .stock-advice-text.opp { background: var(--green-soft); color: var(--green); }
-    .trend-list { display: flex; flex-direction: column; gap: 10px; }
+    .trend-list { display: flex; flex-direction: column; gap: 8px; }
     .trend-card {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 14px; position: relative; overflow: hidden;
+      border-radius: 14px; padding: 12px; position: relative; overflow: hidden;
     }
     .trend-card::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
       background: linear-gradient(90deg, var(--pink), var(--cyan), var(--pink));
       background-size: 200% 100%; animation: gradient-flow 3s linear infinite reverse;
     }
-    .trend-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .trend-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .trend-name { font-size: 16px; font-weight: 800; }
-    .trend-code { font-size: 11px; color: var(--text-dim); margin-left: 6px; font-family: 'SF Mono', monospace; }
+    .trend-code { font-size: 10px; color: var(--text-dim); margin-left: 6px; font-family: 'SF Mono', monospace; }
     .trend-score {
-      display: inline-block; font-size: 11px; font-weight: 800;
-      padding: 3px 8px; border-radius: 4px; margin-left: 8px;
+      display: inline-block; font-size: 10px; font-weight: 800;
+      padding: 3px 7px; border-radius: 4px; margin-left: 6px;
       font-family: 'SF Mono', monospace;
     }
     .trend-score.high { background: var(--green-soft); color: var(--green); }
     .trend-score.mid { background: var(--yellow-soft); color: var(--yellow); }
     .trend-change-wrap { text-align: right; }
-    .trend-change-label { font-size: 10px; color: var(--text-dim); }
+    .trend-change-label { font-size: 9px; color: var(--text-dim); }
     .trend-change-val {
-      font-size: 16px; font-weight: 800; font-family: 'SF Mono', monospace;
+      font-size: 15px; font-weight: 800; font-family: 'SF Mono', monospace;
       display: inline-flex; align-items: center; gap: 4px;
     }
     .trend-logic {
-      padding: 10px 12px; border-left: 3px solid var(--cyan);
-      background: var(--cyan-soft); border-radius: 0 10px 10px 0; margin-top: 10px;
+      padding: 9px 11px; border-left: 3px solid var(--cyan);
+      background: var(--cyan-soft); border-radius: 0 10px 10px 0; margin-top: 8px;
     }
-    .trend-logic-label { font-size: 11px; font-weight: 800; color: var(--cyan); margin-bottom: 3px; }
-    .trend-logic-text { font-size: 12px; }
-    .trend-details { display: flex; gap: 14px; margin-top: 10px; flex-wrap: wrap; }
-    .trend-detail { font-size: 11px; color: var(--text-dim); font-family: 'SF Mono', monospace; }
+    .trend-logic-label { font-size: 10px; font-weight: 800; color: var(--cyan); margin-bottom: 3px; }
+    .trend-logic-text { font-size: 11px; }
+    .trend-details { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+    .trend-detail { font-size: 10px; color: var(--text-dim); font-family: 'SF Mono', monospace; }
     .trend-detail span { color: var(--text); font-weight: 700; }
     .trend-advice {
-      display: inline-block; font-size: 11px; font-weight: 800;
-      padding: 4px 12px; border-radius: 20px; margin-top: 8px;
+      display: inline-block; font-size: 10px; font-weight: 800;
+      padding: 4px 11px; border-radius: 14px; margin-top: 8px;
       font-family: 'SF Mono', monospace;
     }
     .trend-advice.buy { background: var(--green-soft); color: var(--green); }
     .trend-advice.risk { background: var(--red-soft); color: var(--red); }
-    .discipline-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .discipline-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
     .discipline-card {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; padding: 14px;
+      border-radius: 12px; padding: 12px;
     }
     .discipline-card h3 {
-      font-size: 13px; font-weight: 800; margin-bottom: 10px; color: var(--cyan);
+      font-size: 12px; font-weight: 800; margin-bottom: 8px; color: var(--cyan);
       font-family: 'SF Mono', monospace;
     }
     .discipline-card ul { list-style: none; }
     .discipline-card li {
-      font-size: 12px; color: var(--text-dim);
-      padding: 4px 0 4px 14px; position: relative;
+      font-size: 11px; color: var(--text-dim);
+      padding: 3px 0 3px 12px; position: relative;
       line-height: 1.7;
     }
     .discipline-card li::before {
       content: '›'; position: absolute; left: 0; color: var(--pink); font-weight: 800;
     }
     .disclaimer {
-      text-align: center; padding: 26px 14px 40px; margin-top: 10px;
+      text-align: center; padding: 22px 12px 35px; margin-top: 10px;
       border-top: 1px solid var(--border);
     }
     .disclaimer-text {
-      font-size: 11px; color: var(--text-dim); max-width: 480px; margin: 0 auto;
+      font-size: 10px; color: var(--text-dim); max-width: 480px; margin: 0 auto;
       line-height: 1.8;
     }
     .disclaimer-brand {
-      font-size: 11px; color: var(--text-dim); font-weight: 700; margin-top: 14px;
+      font-size: 10px; color: var(--text-dim); font-weight: 700; margin-top: 12px;
       letter-spacing: 2px; font-family: 'SF Mono', monospace;
     }
     .scroll-top {
-      position: fixed; bottom: 18px; right: 18px; z-index: 200;
-      width: 46px; height: 46px; border-radius: 50%;
+      position: fixed; bottom: 16px; right: 16px; z-index: 200;
+      width: 44px; height: 44px; border-radius: 50%;
       background: linear-gradient(135deg, var(--cyan), var(--pink));
-      color: var(--bg); font-size: 22px; font-weight: 800;
+      color: var(--bg); font-size: 21px; font-weight: 800;
       border: none; cursor: pointer; display: none; align-items: center; justify-content: center;
-      box-shadow: 0 0 20px var(--cyan-glow), 0 0 30px var(--pink-glow);
+      box-shadow: 0 0 18px var(--cyan-glow), 0 0 28px var(--pink-glow);
       transition: all 0.3s;
     }
     .scroll-top.show { display: flex; }
-    .scroll-top:hover { transform: translateY(-2px); box-shadow: 0 6px 30px var(--cyan-glow), 0 12px 40px var(--pink-glow); }
+    .scroll-top:hover { transform: translateY(-2px); box-shadow: 0 6px 28px var(--cyan-glow), 0 12px 38px var(--pink-glow); }
   </style>
 </head>
 <body>
@@ -462,22 +458,22 @@
           <div class="sentiment-grid">
             <div class="sentiment-item">
               <span class="sentiment-label">涨跌停</span>
-              <span class="sentiment-val"><span class="up">73</span> / <span class="down">70</span></span>
+              <span class="sentiment-val"><span class="up">90</span> / <span class="down">55</span></span>
             </div>
             <div class="sentiment-item">
               <span class="sentiment-label">涨跌家数</span>
-              <span class="sentiment-val"><span class="up">1469</span> / <span class="down">1681</span></span>
+              <span class="sentiment-val"><span class="up">3026</span> / <span class="down">2308</span></span>
             </div>
             <div class="sentiment-item">
               <span class="sentiment-label">大小盘对比</span>
-              <span class="sentiment-val">大盘略优</span>
+              <span class="sentiment-val">中小盘强</span>
             </div>
             <div class="sentiment-item">
               <span class="sentiment-label">连板情绪</span>
-              <span class="sentiment-val up">极度高涨</span>
+              <span class="sentiment-val up">较高</span>
             </div>
           </div>
-          <div class="sentiment-alert">⚡ 赚钱效应爆棚，积极打板，优选龙头</div>
+          <div class="sentiment-alert">⚡ 市场高位震荡，指数弱个股强</div>
         </div>
       </section>
       <section id="catalyst">
@@ -561,34 +557,29 @@
           <div class="discipline-card">
             <h3>风险警示</h3>
             <ul>
-              <li>当前未检测到极高风险标的</li>
-              <li>连板股断板后观察2日，不反包则离场</li>
-              <li>注意资金面双流出标的，谨慎参与</li>
-              <li>涨幅较大标的注意追高风险</li>
+              <li>注意高位科技股获利回吐风险</li>
+              <li>连板高标分化，关注龙头承接</li>
+              <li>注意资金面流出板块，谨慎参与</li>
+              <li>控制仓位，保留现金应对波动</li>
             </ul>
           </div>
         </div>
       </section>
       <div class="disclaimer">
         <p class="disclaimer-text">风险提示：本报告由量化模型自动生成，所有分析基于历史数据和统计规律，不构成任何投资建议。股市有风险，投资需谨慎。过往表现不代表未来收益。</p>
-        <div class="disclaimer-brand">— STOCK ALPHA V1.0 —</div>
+        <div class="disclaimer-brand">— STOCK ALPHA V2.0 —</div>
       </div>
     </main>
     <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
   </div>
   <script>
     const indices = [
-      { name: '上证指数', value: '4179.95', change: '-0.00%', dir: 'down' },
-      { name: '深证成指', value: '15563.80', change: '-0.50%', dir: 'down' },
-      { name: '创业板指', value: '3792.87', change: '-0.96%', dir: 'down' },
-      { name: '沪深300', value: '4871.91', change: '-0.58%', dir: 'down' },
-      { name: '上证50', value: '2999.86', change: '-0.97%', dir: 'down' },
-      { name: '中证500', value: '8349.51', change: '+0.08%', dir: 'up' },
-      { name: '中证1000', value: '8381.95', change: '+0.47%', dir: 'up' },
-      { name: '道琼斯', value: '46247.29', change: '+0.65%', dir: 'up' },
-      { name: '纳斯达克', value: '22484.07', change: '+0.44%', dir: 'up' },
-      { name: '标普500', value: '6643.70', change: '+0.59%', dir: 'up' },
-      { name: '恒生指数', value: '25776.53', change: '-1.28%', dir: 'down' }
+      { name: '上证指数', value: '4162.27', change: '-0.43%', dir: 'down' },
+      { name: '深证成指', value: '15495.22', change: '-0.94%', dir: 'down' },
+      { name: '创业板指', value: '3795.44', change: '-0.98%', dir: 'down' },
+      { name: '科创50', value: '1630.25', change: '-2.90%', dir: 'down' },
+      { name: '中证1000', value: '8389.21', change: '+0.47%', dir: 'up' },
+      { name: '北证50', value: '1433.81', change: '+2.05%', dir: 'up' },
     ];
     document.getElementById('indexGrid').innerHTML = indices.map(i => `
       <div class="index-card">
@@ -598,12 +589,11 @@
       </div>
     `).join('');
     const news = [
-      { title: '商业航天密集发射', desc: '近期商业航天发射任务密集，卫星互联网产业链持续受益', icon: '🚀', color: 'red' },
-      { title: 'AI算力需求爆发', desc: '国内外大厂持续加大AI算力投入，光模块/PCB/服务器需求旺盛', icon: '🤖', color: 'cyan' },
-      { title: '锂价触底反弹', desc: '碳酸锂期货价格持续反弹，锂矿企业估值修复', icon: '🔋', color: 'green' },
-      { title: '电力体制改革深化', desc: '电力市场化改革加速推进，电力企业盈利预期改善', icon: '⚡', color: 'yellow' },
-      { title: '地产政策持续宽松', desc: '多地出台地产支持政策，家装/建材需求有望回暖', icon: '🏠', color: 'pink' },
-      { title: '钨价持续上涨', desc: '钨价创近年新高，钨产业链企业利润弹性大', icon: '📈', color: 'red' }
+      { title: '人形机器人量产催化', desc: '特斯拉Optimus Gen-3宣布量产，宇树科技开放全球首个任务应用商店', icon: '🤖', color: 'red' },
+      { title: '算电协同持续推进', desc: '宁夏中卫全国首个大规模算电协同绿电项目全面投产', icon: '⚡', color: 'cyan' },
+      { title: '商业航天密集', desc: '国家商业航天标准体系发布，SpaceX即将上市', icon: '🚀', color: 'green' },
+      { title: '海外EPC+城市更新', desc: '金螳螂澄清部分概念与核心业务无关，但持续上榜热股', icon: '🏗️', color: 'yellow' },
+      { title: '光纤光缆涨价', desc: '光纤概念活跃，通鼎互联涨停', icon: '📡', color: 'pink' },
     ];
     document.getElementById('newsList').innerHTML = news.map(n => `
       <div class="news-item">
@@ -615,11 +605,10 @@
       </div>
     `).join('');
     const policies = [
-      { source: '国务院', text: '印发《关于深化电力体制改革加快构建新型电力系统的指导意见》' },
-      { source: '工信部', text: '发布《关于推进5G-A商用部署的通知》' },
-      { source: '发改委', text: '加快推进商业航天产业发展' },
-      { source: '自然资源部', text: '支持稀土产业发展，加强战略资源保护' },
-      { source: '住建部', text: '进一步优化房地产调控政策，支持刚性和改善性住房需求' }
+      { source: '国务院', text: '深化电力体制改革，推进新型电力系统建设' },
+      { source: '工信部', text: '推进机器人产业发展规划，人形机器人纳入重点支持' },
+      { source: '发改委', text: '加快商业航天产业发展' },
+      { source: '住建部', text: '推进城市更新行动，促进建筑装饰产业发展' },
     ];
     document.getElementById('policyList').innerHTML = policies.map(p => `
       <div class="policy-item">
@@ -629,10 +618,8 @@
     `).join('');
     const futures = [
       { name: '碳酸锂', price: '112,500', change: '+2.35%', signal: '强势', sc: 'strong', dir: 'up' },
-      { name: '螺纹钢', price: '3,650', change: '+0.55%', signal: '中性', sc: 'neutral', dir: 'up' },
-      { name: '沪铜', price: '72,500', change: '+1.20%', signal: '偏强', sc: 'strong', dir: 'up' },
-      { name: '沪金', price: '568.50', change: '+0.85%', signal: '偏强', sc: 'strong', dir: 'up' },
-      { name: '纯碱', price: '1,850', change: '-1.50%', signal: '弱势', sc: 'weak', dir: 'down' }
+      { name: '螺纹钢', price: '3,650', change: '-0.32%', signal: '中性', sc: 'neutral', dir: 'down' },
+      { name: '沪铜', price: '72,500', change: '+0.58%', signal: '偏强', sc: 'strong', dir: 'up' },
     ];
     document.getElementById('futuresGrid').innerHTML = futures.map(f => `
       <div class="futures-card">
@@ -643,10 +630,7 @@
       </div>
     `).join('');
     const usStocks = [
-      { name: '半导体', change: '+0.66%', signal: '偏强', impact: '利好国内半导体产业链', dir: 'up', sc: 'strong' },
-      { name: '科技', change: '+0.53%', signal: '偏强', impact: '利好国内科技板块', dir: 'up', sc: 'strong' },
-      { name: '新能源', change: '+0.35%', signal: '中性', impact: '利好国内新能源板块', dir: 'up', sc: 'neutral' },
-      { name: '消费', change: '+0.22%', signal: '中性', impact: '利好国内消费板块', dir: 'up', sc: 'neutral' }
+      { name: '美股整体', change: '+0.65%', signal: '偏强', impact: '海外市场平稳', dir: 'up', sc: 'strong' },
     ];
     document.getElementById('usList').innerHTML = usStocks.map(u => `
       <div class="us-item">
@@ -661,12 +645,12 @@
       </div>
     `).join('');
     const sectors = [
-      { name: '先进封装', change: '+3.82%', flow: '+26.24亿', leader: '芯原股份' },
-      { name: '卫星互联网', change: '+2.22%', flow: '+23.49亿', leader: '中国卫星' },
-      { name: '航天航空', change: '+1.78%', flow: '+16.74亿', leader: '中国卫星' },
-      { name: '北斗导航', change: '+1.70%', flow: '+43.82亿', leader: '中国长城' },
-      { name: '国产芯片', change: '+1.63%', flow: '+47.79亿', leader: '中国长城' },
-      { name: '低空经济', change: '+0.58%', flow: '+22.09亿', leader: '创世纪' }
+      { name: '人形机器人', change: '+5.82%', flow: '+22.53亿', leader: '巨力索具' },
+      { name: '商业航天', change: '+3.22%', flow: '+15.74亿', leader: '中国卫星' },
+      { name: '算电协同', change: '+2.88%', flow: '+17.76亿', leader: '华电辽能' },
+      { name: '光通信', change: '+2.67%', flow: '+23.49亿', leader: '中天科技' },
+      { name: '新型城镇化', change: '+1.83%', flow: '+12.21亿', leader: '金螳螂' },
+      { name: '新型储能', change: '+1.55%', flow: '+8.45亿', leader: '美利云' },
     ];
     document.getElementById('sectorGrid').innerHTML = sectors.map(s => `
       <div class="sector-card">
@@ -678,40 +662,40 @@
     `).join('');
     const stocks = [
       {
-        name: '德明利', code: '001309', price: '616.51', change: '+6.79%', changeDir: 'up', changeVal: 6.79,
-        stars: 5, sector: '存储芯片',
-        logic: '存储主控芯片龙头，受益于AI算力存储需求爆发+存储超级周期，2026Q1营收+502%净利润+4943%扭亏为盈',
-        tags: [{text: '存储超级周期', type: 'news'}, {text: 'AI算力需求', type: 'news'}, {text: '业绩暴增', type: 'capital'}],
-        advice: '谨慎参与', adviceClass: 'caution'
-      },
-      {
         name: '通鼎互联', code: '002491', price: '20.66', change: '+10.00%', changeDir: 'up', changeVal: 10.00,
-        stars: 4, sector: '通信设备',
-        logic: '光纤光缆龙头，通信设备+网络安全双主业，28亿大单，2连板',
-        tags: [{text: '光纤涨价', type: 'news'}, {text: '国产替代', type: 'policy'}, {text: '大额订单', type: 'capital'}],
+        stars: 5, sector: '光通信',
+        logic: '光纤光缆龙头，通信设备+网络安全双主业，中国移动2026-2027特种光缆集采份额第一，2连板',
+        tags: [{text: '光纤涨价', type: 'news'}, {text: '光通信', type: 'news'}, {text: '2连板', type: 'capital'}],
         advice: '谨慎参与', adviceClass: 'caution'
       },
       {
-        name: '中国长城', code: '000066', price: '23.30', change: '-2.84%', changeDir: 'down', changeVal: -2.84,
-        stars: 2, sector: '信创',
-        logic: '国产CPU（飞腾）+整机龙头，信创核心标的，3连板后回调',
-        tags: [{text: '信创采购', type: 'policy'}, {text: '国产替代', type: 'policy'}],
+        name: '德明利', code: '001309', price: '597.71', change: '-3.05%', changeDir: 'down', changeVal: -3.05,
+        stars: 4, sector: '存储芯片',
+        logic: '存储主控芯片龙头，受益于AI算力存储需求爆发+存储超级周期，2026Q1营收+502%净利润+4943%',
+        tags: [{text: '存储超级周期', type: 'news'}, {text: 'AI算力', type: 'news'}, {text: '业绩暴增', type: 'capital'}],
         advice: '观望为主', adviceClass: 'caution'
       },
       {
-        name: '立讯精密', code: '002475', price: '69.93', change: '+0.59%', changeDir: 'up', changeVal: 0.59,
-        stars: 3, sector: '消费电子',
-        logic: '消费电子制造龙头，苹果+汽车电子双驱动',
-        tags: [{text: '苹果新品', type: 'news'}, {text: '汽车电子放量', type: 'capital'}],
-        advice: '谨慎参与', adviceClass: 'caution'
+        name: '中国长城', code: '000066', price: '23.09', change: '-3.71%', changeDir: 'down', changeVal: -3.71,
+        stars: 3, sector: '信创',
+        logic: '国产CPU（飞腾）+整机龙头，中国AI50核心标的，3连板后回调',
+        tags: [{text: '信创', type: 'policy'}, {text: 'AI PC', type: 'news'}],
+        advice: '观望为主', adviceClass: 'caution'
       },
       {
-        name: '赤天化', code: '600227', price: '3.93', change: '-2.96%', changeDir: 'down', changeVal: -2.96,
-        stars: 4, sector: '化工化肥',
-        logic: '化工化肥龙头，尿素+甲醇+医药双主业，贵州煤化工核心标的',
-        tags: [{text: '化肥涨价', type: 'news'}, {text: '煤化工景气', type: 'capital'}, {text: '医药转型', type: 'news'}],
+        name: '立讯精密', code: '002475', price: '71.29', change: '+2.55%', changeDir: 'up', changeVal: 2.55,
+        stars: 4, sector: '消费电子',
+        logic: '消费电子制造龙头，苹果+汽车电子双驱动，主力净流入17.62亿元',
+        tags: [{text: '苹果产业链', type: 'news'}, {text: '汽车电子', type: 'capital'}],
+        advice: '趋势中段', adviceClass: 'opp'
+      },
+      {
+        name: '赤天化', code: '600227', price: '3.85', change: '-2.04%', changeDir: 'down', changeVal: -2.04,
+        stars: 3, sector: '化工化肥',
+        logic: '化工化肥龙头，贵州煤化工核心标的',
+        tags: [{text: '煤化工', type: 'news'}],
         advice: '谨慎参与', adviceClass: 'caution'
-      }
+      },
     ];
     // 排序：上涨的放前面，下跌的放后面
     const sortedStocks = [...stocks].sort((a, b) => {
@@ -719,7 +703,7 @@
       if (a.changeDir === 'down' && b.changeDir === 'up') return 1;
       return 0;
     });
-    document.getElementById('stockList').innerHTML = sortedStocks.map((s, originalIndex) => `
+    document.getElementById('stockList').innerHTML = sortedStocks.map(s => `
       <div class="stock-card">
         <div class="stock-top">
           <div class="stock-info">
@@ -754,54 +738,40 @@
     `).join('');
     const trends = [
       {
-        name: '博云新材', code: '002297', price: '25.71', change: '+3.88%', dir: 'up', changeVal: 3.88,
-        scoreClass: 'high',
-        logic: '商业航天碳/碳复合材料绝对龙头，飞机刹车副国内垄断市占率超80%，航天发动机部件核心供应商',
-        details: [{label: '趋势阶段', value: '上升末期'}, {label: '逻辑硬度', value: '★★★★★'}],
-        advice: '涨幅较大，注意风险', adviceClass: 'risk'
-      },
-      {
         name: '通鼎互联', code: '002491', price: '20.66', change: '+10.00%', dir: 'up', changeVal: 10.00,
         scoreClass: 'high',
-        logic: '光纤光缆龙头，通信设备+网络安全双主业，28亿大单，2连板',
-        details: [{label: '趋势阶段', value: '上升中段'}, {label: '逻辑硬度', value: '★★★★☆'}],
+        logic: '光纤光缆龙头，通信设备+网络安全双主业，2连板',
+        details: [{label: '趋势阶段', value: '上升中段'}, {label: '连板高度', value: '2连板'}],
         advice: '趋势中段，可介入', adviceClass: 'buy'
       },
       {
-        name: '美诺华', code: '603538', price: '62.90', change: '+2.03%', dir: 'up', changeVal: 2.03,
+        name: '金螳螂', code: '002081', price: '6.81', change: '-4.62%', dir: 'down', changeVal: -4.62,
         scoreClass: 'high',
-        logic: '特色原料药+CDMO一体化龙头，独立逻辑趋势龙头，昨日跌停后反弹',
-        details: [{label: '趋势阶段', value: '上升末期'}, {label: '逻辑硬度', value: '★★★★☆'}],
-        advice: '涨幅较大，注意风险', adviceClass: 'risk'
+        logic: '公装装饰龙头，澄清部分热门概念与核心业务无关，12天10板后低开',
+        details: [{label: '趋势阶段', value: '上升末期'}, {label: '连板高度', value: '12天10板'}],
+        advice: '涨幅巨大，注意风险', adviceClass: 'risk'
       },
       {
-        name: '维科技术', code: '600152', price: '15.71', change: '+3.96%', dir: 'up', changeVal: 3.96,
+        name: '华电辽能', code: '600396', price: '12.00', change: '+1.83%', dir: 'up', changeVal: 1.83,
         scoreClass: 'mid',
-        logic: '市场活跃标的，趋势形态良好',
-        details: [{label: '趋势阶段', value: '上升中段'}, {label: '逻辑硬度', value: '★★★☆☆'}],
+        logic: '算电协同核心标的，16天8板后高位震荡',
+        details: [{label: '趋势阶段', value: '上升中段'}, {label: '连板高度', value: '16天8板'}],
         advice: '趋势中段，可介入', adviceClass: 'buy'
       },
       {
-        name: '华电辽能', code: '600396', price: '12.44', change: '+3.67%', dir: 'up', changeVal: 3.67,
+        name: '巨力索具', code: '002342', price: '22.12', change: '+3.85%', dir: 'up', changeVal: 3.85,
         scoreClass: 'mid',
-        logic: '电力改革核心标的，算电协同国家战略，16天8板',
-        details: [{label: '趋势阶段', value: '上升中段'}, {label: '逻辑硬度', value: '★★★☆☆'}],
+        logic: '索具龙头，商业航天+军工，高端吊装需求',
+        details: [{label: '趋势阶段', value: '上升初期'}, {label: '连板高度', value: '首板'}],
         advice: '趋势中段，可介入', adviceClass: 'buy'
       },
       {
-        name: '金螳螂', code: '002081', price: '6.88', change: '-3.64%', dir: 'down', changeVal: -3.64,
+        name: '中国长城', code: '000066', price: '23.09', change: '-3.71%', dir: 'down', changeVal: -3.71,
         scoreClass: 'mid',
-        logic: '公装龙头，商业航天发射场配套工程+洁净室，12天10板后回调',
-        details: [{label: '趋势阶段', value: '上升末期'}, {label: '逻辑硬度', value: '★★★★☆'}],
-        advice: '涨幅较大，注意风险', adviceClass: 'risk'
+        logic: '国产CPU（飞腾）+整机龙头，3连板后回调',
+        details: [{label: '趋势阶段', value: '上升末期'}, {label: '连板高度', value: '3连板'}],
+        advice: '涨幅巨大，注意风险', adviceClass: 'risk'
       },
-      {
-        name: '丰元股份', code: '002805', price: '24.45', change: '-0.29%', dir: 'down', changeVal: -0.29,
-        scoreClass: 'mid',
-        logic: '市场活跃标的，趋势形态良好',
-        details: [{label: '趋势阶段', value: '上升中段'}, {label: '逻辑硬度', value: '★★★☆☆'}],
-        advice: '趋势中段，可介入', adviceClass: 'buy'
-      }
     ];
     // 排序：上涨的放前面，下跌的放后面
     const sortedTrends = [...trends].sort((a, b) => {
@@ -809,7 +779,7 @@
       if (a.dir === 'down' && b.dir === 'up') return 1;
       return 0;
     });
-    document.getElementById('trendList').innerHTML = sortedTrends.map((t) => `
+    document.getElementById('trendList').innerHTML = sortedTrends.map(t => `
       <div class="trend-card">
         <div class="trend-top">
           <div>
@@ -833,13 +803,15 @@
       </div>
     `).join('');
     setTimeout(() => {
-      document.querySelectorAll('.stock-card .change-bar-fill').forEach((bar, i) => {
-        const target = Math.min(100, Math.abs(sortedStocks[i].changeVal) * 10);
-        setTimeout(() => { bar.style.width = target + '%'; }, i * 80);
+      sortedStocks.forEach((s, i) => {
+        const fill = document.querySelectorAll('.stock-card .change-bar-fill')[i];
+        const target = Math.min(100, Math.abs(s.changeVal) * 10);
+        setTimeout(() => { fill.style.width = target + '%'; }, i * 80);
       });
-      document.querySelectorAll('.trend-card .change-bar-fill').forEach((bar, i) => {
-        const target = Math.min(100, Math.abs(sortedTrends[i].changeVal) * 10);
-        setTimeout(() => { bar.style.width = target + '%'; }, (i + sortedStocks.length) * 80);
+      sortedTrends.forEach((t, i) => {
+        const fill = document.querySelectorAll('.trend-card .change-bar-fill')[i];
+        const target = Math.min(100, Math.abs(t.changeVal) * 10);
+        setTimeout(() => { fill.style.width = target + '%'; }, (i + sortedStocks.length) * 80);
       });
     }, 300);
     document.querySelectorAll('.tab').forEach(tab => {
@@ -861,7 +833,7 @@
         const el = document.getElementById(sections[i]);
         if (el) {
           const rect = el.getBoundingClientRect();
-          if (rect.top - 150 <= 0) {
+          if (rect.top - 120 <= 0) {
             navLinks.forEach(a => a.classList.remove('active'));
             document.querySelector('#nav a[href="#' + sections[i] + '"]').classList.add('active');
             break;
