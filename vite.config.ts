@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite'
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 export default defineConfig({
   base: '/trae/',
   build: {
     outDir: 'dist',
   },
-  plugins: [],
+  plugins: [cloudflare()],
 })
