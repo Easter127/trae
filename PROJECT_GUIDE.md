@@ -11,8 +11,9 @@
 | 项目名称 | moss-3d-scene（苔藓3D交互场景） |
 | GitHub 仓库 | `Easter127/trae` |
 | 访问地址 | https://easter127.github.io/trae/ |
+| CDN 加速地址 | https://trae-2zm.pages.dev/ |
 | 技术栈 | 纯 HTML + CSS + Canvas 2D（无框架依赖） |
-| 部署方式 | GitHub Pages（Deploy from branch） |
+| 部署方式 | GitHub Pages（Deploy from branch）+ Cloudflare CDN |
 | 构建工具 | Vite（仅用于构建，非必须） |
 
 ---
@@ -33,7 +34,9 @@ graph TB
     subgraph 部署流程
         F[Git Push] --> G[GitHub 仓库]
         G --> H[GitHub Pages]
-        H --> I[用户访问]
+        H --> J[Cloudflare CDN]
+        J --> I[用户访问]
+        H -.-> I
     end
     
     A --> F
@@ -893,7 +896,10 @@ flowchart LR
 
 ## 九、后续优化方向
 
-1. **添加 Cloudflare CDN**：国内加速访问
+1. **✅ 已添加 Cloudflare CDN**：国内加速访问
+   - CDN 地址：https://trae-2zm.pages.dev/
+   - 原地址：https://easter127.github.io/trae/
+   - 部署方式：推送到 GitHub → GitHub Pages 自动部署 → Cloudflare 自动同步
 2. **增加粒子数量**：性能允许时可增加到 1000+
 3. **添加触摸支持**：移动端交互
 4. **添加声音效果**：Web Audio API
@@ -913,6 +919,8 @@ graph LR
     D -->|坑6-7: Git/构建问题| E[代码推送成功]
     E -->|坑8-10: Pages 配置| F[GitHub Pages 部署]
     F -->|坑11-12: 国内网络| G[GitHub Pages 永久免费 ✅]
+    F --> H[Cloudflare CDN 加速]
+    H --> G
     
     style A fill:#ff4444,color:#fff
     style C fill:#ff8800,color:#fff
