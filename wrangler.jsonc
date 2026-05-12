@@ -1,6 +1,0 @@
-{
-  "name": "trae",
-  "compatibility_date": "2026-05-09",
-  "compatibility_flags": ["nodejs_compat"],
-  "assets": { "not_found_handling": "single-page-application" }
-}
