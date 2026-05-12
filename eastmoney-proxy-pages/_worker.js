@@ -1,4 +1,3 @@
-// Eastmoney API Proxy - Updated 2026-05-12
 const ROUTES = {
   '/api/clist': { host: 'push2.eastmoney.com', path: '/api/qt/clist/get' },
   '/api/slist': { host: 'push2.eastmoney.com', path: '/api/qt/slist/get' },
@@ -22,24 +21,54 @@ export default {
   async fetch(request) {
     const url = new URL(request.url);
     const path = url.pathname;
+
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, OPTIONS', 'Access-Control-Allow-Headers': '*' } });
+      return new Response(null, {
+        status: 204,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+          'Access-Control-Allow-Headers': '*',
+        },
+      });
     }
-    if (path === '/health' || path === '/api/health') {
-      return new Response(JSON.stringify({ status: 'ok', endpoints: Object.keys(ROUTES) }), { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
+
+    if (path === '/health') {
+      return new Response(JSON.stringify({ status: 'ok', endpoints: Object.keys(ROUTES) }), {
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      });
     }
+
     const route = ROUTES[path];
     if (!route) {
-      return new Response(JSON.stringify({ error: 'Unknown endpoint', endpoints: Object.keys(ROUTES) }), { status: 404, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
+      return new Response(JSON.stringify({ error: 'Unknown endpoint', endpoints: Object.keys(ROUTES) }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      });
     }
+
     const targetUrl = 'https://' + route.host + route.path + '?' + url.searchParams.toString();
+
     try {
-      const resp = await fetch(targetUrl, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', 'Referer': 'https://quote.eastmoney.com/' } });
+      const resp = await fetch(targetUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Referer': 'https://quote.eastmoney.com/',
+        },
+      });
       const data = await resp.text();
-      return new Response(data, { status: resp.status, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' } });
+      return new Response(data, {
+        status: resp.status,
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
     } catch (err) {
-      return new Response(JSON.stringify({ error: err.message }), { status: 502, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
+      return new Response(JSON.stringify({ error: err.message }), {
+        status: 502,
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      });
     }
   },
 };
-// Updated: 2026-05-12 07:12:05
