@@ -18,11 +18,12 @@ const ROUTES = {
 };
 
 export async function onRequest(context) {
-  const { request, params } = context;
+  const { request } = context;
   const url = new URL(request.url);
   
-  // params.path 是 [[path]] 匹配到的路径部分
-  const endpoint = params.path || '';
+  // 从 pathname 提取端点名 /api/xxx -> xxx
+  const pathname = url.pathname;
+  const endpoint = pathname.replace('/api/', '').replace(/\/$/, '');
   
   if (request.method === 'OPTIONS') {
     return new Response(null, {
@@ -31,11 +32,18 @@ export async function onRequest(context) {
     });
   }
   
+  if (endpoint === 'health') {
+    return new Response(JSON.stringify({ status: 'ok', endpoints: Object.keys(ROUTES) }), {
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
+  }
+  
   const route = ROUTES[endpoint];
   if (!route) {
     return new Response(JSON.stringify({ 
       error: 'Unknown endpoint', 
       endpoint: endpoint,
+      pathname: pathname,
       available: Object.keys(ROUTES) 
     }), {
       status: 404,
